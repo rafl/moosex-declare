@@ -30,7 +30,7 @@ class Corge extends Foo::Bar with Role {
     sub required_thing {}
 }
 
-class Quux extends Corge is immutable {
+class Quux extends Corge {
     has 'x' => (
         is  => 'ro',
         isa => 'Int',
