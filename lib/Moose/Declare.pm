@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-package MooseX::DefClass;
+package Moose::Declare;
 
 use Scope::Guard;
 use Devel::Declare ();
@@ -107,7 +107,7 @@ sub inject_if_block {
 }
 
 sub scope_injector_call {
-     return 'BEGIN { MooseX::DefClass::inject_scope }; ';
+     return 'BEGIN { Moose::Declare::inject_scope }; ';
 }
 
 sub shadow {
@@ -150,7 +150,7 @@ sub parser {
     $name = join('::', Devel::Declare::get_curstash_name(), $name)
         unless $stash eq 'main';
 
-    my $inject = qq/package ${name}; use MooseX::DefClass; /;
+    my $inject = qq/package ${name}; use Moose::Declare; /;
     if ($Declarator eq 'class') {
         $inject .= q/use Moose;/;
     }
