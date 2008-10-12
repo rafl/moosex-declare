@@ -1,6 +1,5 @@
 use MooseX::DefClass;
 
-=for later
 class Foo {
     sub foo {}
 
@@ -15,9 +14,8 @@ class Foo {
 
 role Role {
     requires 'required_thing';
-    sub role {}
+    sub role_method {}
 }
-=cut
 
 class Moo::Kooh {
     extends 'Foo';
@@ -27,15 +25,18 @@ class Moo::Kooh {
     sub required_thing {}
 }
 
-=for later
 class Corge extends Foo::Bar with Role {
     sub corge {}
     sub required_thing {}
 }
 
 class Quux extends Corge is immutable {
+    has 'x' => (
+        is  => 'ro',
+        isa => 'Int',
+    );
+
     sub quux {}
 }
-=cut
 
 1;
