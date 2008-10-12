@@ -162,8 +162,6 @@ sub parser {
     my $options = strip_options;
     $inject .= options_unwrap($options);
 
-    warn $inject;
-
     if (defined $name) {
         $inject = $inject . scope_injector_call();
     }
