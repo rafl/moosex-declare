@@ -2,8 +2,8 @@ use strict;
 use warnings;
 use inc::Module::Install;
 
-name 'Moose-Declare';
-all_from 'lib/Moose/Declare.pm';
+name 'MooseX-Declare';
+all_from 'lib/MooseX/Declare.pm';
 
 requires 'Devel::Declare';
 requires 'Moose';

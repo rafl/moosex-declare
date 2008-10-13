@@ -1,4 +1,4 @@
-use Moose::Declare;
+use MooseX::Declare;
 
 class Foo {
     sub foo {}
