@@ -180,7 +180,7 @@ sub parser {
     inject_if_block($inject);
 
     if (defined $name) {
-        shadow(sub (&) { shift->() });
+        shadow(sub (&) { shift->(); return $name; });
     }
     else {
         shadow(sub (&) { shift->(); return $anon->name });
