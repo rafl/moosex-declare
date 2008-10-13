@@ -92,7 +92,12 @@ sub strip_options {
         skipspace;
     }
 
-    return \%ret;
+    return { map {
+        my $key = $_;
+        $key eq 'is'
+            ? ($key => { map { ($_ => 1) } @{ $ret{$key} } })
+            : ($key => $ret{$key})
+    } keys %ret };
 }
 
 sub inject_if_block {
@@ -108,7 +113,9 @@ sub inject_if_block {
 }
 
 sub scope_injector_call {
-     return 'BEGIN { MooseX::Declare::inject_scope }; ';
+    my ($inject) = @_;
+
+    return "BEGIN { MooseX::Declare::inject_scope('${inject}') }; ";
 }
 
 sub shadow {
@@ -132,12 +139,6 @@ sub options_unwrap {
         $ret .= ';';
     }
 
-    if (my $traits = $options->{is}) {
-        for my $trait (@{ $traits }) {
-            die "unsupported trait ${trait}";
-        }
-    }
-
     return $ret;
 }
 
@@ -146,7 +147,8 @@ sub parser {
 
     skip_declarator;
 
-    my $name = strip_name;
+    my $name    = strip_name;
+    my $options = strip_options;
 
     my ($package, $anon);
 
@@ -162,19 +164,23 @@ sub parser {
     }
 
     my $inject = qq/package ${package}; use MooseX::Declare; /;
+    my $inject_after = '';
+
     if ($Declarator eq 'class') {
-        $inject .= q/use Moose;/;
+        $inject       .= q/use Moose;/;
+        $inject_after .= "${package}->meta->make_immutable;"
+            unless exists $options->{is}->{mutable};
     }
     elsif ($Declarator eq 'role') {
         $inject .= q/use Moose::Role;/;
     }
     else { die }
 
-    my $options = strip_options;
+    $inject .= 'use namespace::clean -except => [qw/meta/];';
     $inject .= options_unwrap($options);
 
     if (defined $name) {
-        $inject = $inject . scope_injector_call();
+        $inject = $inject . scope_injector_call($inject_after);
     }
 
     inject_if_block($inject);
@@ -188,12 +194,14 @@ sub parser {
 }
 
 sub inject_scope {
+    my ($inject) = @_;
+
     $^H |= 0x120000;
     $^H{DD_METHODHANDLERS} = Scope::Guard->new(sub {
         my $linestr = Devel::Declare::get_linestr();
         return unless defined $linestr;
         my $offset  = Devel::Declare::get_linestr_offset();
-        substr($linestr, $offset, 0) = ';';
+        substr($linestr, $offset, 0) = ';' . $inject;
         Devel::Declare::set_linestr($linestr);
     });
 }
