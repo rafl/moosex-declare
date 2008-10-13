@@ -5,6 +5,7 @@ package Moose::Declare;
 
 use Scope::Guard;
 use Devel::Declare ();
+use Moose::Meta::Class;
 
 our $VERSION = '0.01_01';
 
@@ -146,11 +147,21 @@ sub parser {
     skip_declarator;
 
     my $name = strip_name;
-    my $stash = Devel::Declare::get_curstash_name();
-    $name = join('::', Devel::Declare::get_curstash_name(), $name)
-        unless $stash eq 'main';
 
-    my $inject = qq/package ${name}; use Moose::Declare; /;
+    my ($package, $anon);
+
+    if (defined $name) {
+        $package = $name;
+        my $stash = Devel::Declare::get_curstash_name();
+        $package = join('::', $stash, $name)
+            unless $stash eq 'main';
+    }
+    else {
+        $anon = Moose::Meta::Class->create_anon_class;
+        $package = $anon->name;
+    }
+
+    my $inject = qq/package ${package}; use Moose::Declare; /;
     if ($Declarator eq 'class') {
         $inject .= q/use Moose;/;
     }
@@ -172,7 +183,7 @@ sub parser {
         shadow(sub (&) { shift->() });
     }
     else {
-        shadow(sub (&) { die "anon class unsupported" });
+        shadow(sub (&) { shift->(); return $anon->name });
     }
 }
 
