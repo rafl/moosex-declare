@@ -1,9 +1,14 @@
 use MooseX::Declare;
 
 class Foo {
+    has 'affe' => (
+        is  => 'ro',
+        isa => 'Str',
+    );
+
     sub foo {}
 
-    class Bar {
+    class Bar is mutable {
         sub bar {}
     }
 
