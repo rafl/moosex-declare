@@ -15,17 +15,18 @@ our ($Declarator, $Offset);
 sub import {
     my $caller = caller();
 
+    my @blocks    = qw/class role/;
+    my @modifiers = qw/before after around override augment/;
+
     Devel::Declare->setup_for($caller => {
-        (map { $_ => { const => \&class_parser    } } qw/class role/),
-        (map { $_ => { const => \&modifier_parser } } qw/before after around/),
+        (map { $_ => { const => \&class_parser    } } @blocks),
+        (map { $_ => { const => \&modifier_parser } } @modifiers),
     });
 
     {
         no strict 'refs';
         *{ "${caller}::${_}" } = sub (&) { }
-            for qw/class role/;
-        *{ "${caller}::${_}" } = sub (&) { }
-            for qw/before after around/;
+            for @blocks, @modifiers;
     }
 
     MooseX::Method::Signatures->setup_for($caller)
@@ -158,10 +159,10 @@ sub modifier_parser {
 
     inject_if_block( scope_injector_call() );
 
-    my $modifier_name = $Declarator;
+    my $meth = Moose->can($Declarator);
     shadow(sub (&) {
         my $class = caller();
-        Moose::Util::add_method_modifier($class, $modifier_name, [$name => shift]);
+        $meth->($class, $name, shift);
     });
 }
 
@@ -190,12 +191,12 @@ sub class_parser {
     my $inject_after = '';
 
     if ($Declarator eq 'class') {
-        $inject       .= q/use Moose qw{extends with has override augment make_immutable};/;
+        $inject       .= q/use Moose qw{extends with has make_immutable};/;
         $inject_after .= "${package}->meta->make_immutable;"
             unless exists $options->{is}->{mutable};
     }
     elsif ($Declarator eq 'role') {
-        $inject .= q/use Moose::Role qw{with requires excludes has override make_immutable};/;
+        $inject .= q/use Moose::Role qw{with requires excludes has make_immutable};/;
     }
     else { die }
 
