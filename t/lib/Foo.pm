@@ -6,32 +6,32 @@ class Foo {
         isa => 'Str',
     );
 
-    sub foo {}
+    method foo {}
 
     class Bar is mutable {
-        sub bar {}
+        method bar {}
     }
 
     class Baz {
-        sub baz {}
+        method baz {}
     }
 }
 
 role Role {
     requires 'required_thing';
-    sub role_method {}
+    method role_method {}
 }
 
 class Moo::Kooh {
     extends 'Foo';
     with 'Role';
 
-    sub kooh {}
+    method kooh {}
     sub required_thing {}
 }
 
 class Corge extends Foo::Bar with Role {
-    sub corge {}
+    method corge {}
     sub required_thing {}
 }
 
@@ -41,7 +41,7 @@ class Quux extends Corge {
         isa => 'Int',
     );
 
-    sub quux {}
+    method quux {}
 }
 
 1;
