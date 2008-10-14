@@ -183,7 +183,7 @@ sub parser {
     $inject .= options_unwrap($options);
 
     if (defined $name) {
-        $inject = $inject . scope_injector_call($inject_after);
+        $inject .= scope_injector_call($inject_after);
     }
 
     inject_if_block($inject);
