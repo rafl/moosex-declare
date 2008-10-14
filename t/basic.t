@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 19;
+use Test::More tests => 21;
 use Test::Moose;
 
 use FindBin;
@@ -14,8 +14,8 @@ BEGIN { use_ok('Foo'); }
     has_attribute_ok($pkg, 'affe');
     can_ok($pkg, 'affe');
     can_ok($pkg, 'foo');
-    ok(!$pkg->can('has'));
-    ok(!$pkg->can('inner'));
+    ok(!$pkg->can($_))
+        for qw/has inner method override/;
     ok($pkg->meta->is_immutable);
 
     is($pkg->new->foo, 0);

@@ -240,7 +240,7 @@ MooseX::Declare - Declarative syntax for Moose
 
 =head1 SYNOPSIS
 
-    class Foo {
+    class Foo extends Bar {
         has 'x' => (
             is  => 'ro',
             isa => 'Str',
