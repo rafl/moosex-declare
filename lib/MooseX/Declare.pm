@@ -200,7 +200,7 @@ sub inject_scope {
     my ($inject) = @_;
 
     $^H |= 0x120000;
-    $^H{DD_METHODHANDLERS} = Scope::Guard->new(sub {
+    $^H{MX_DECLARE_SCOPING} = Scope::Guard->new(sub {
         my $linestr = Devel::Declare::get_linestr();
         return unless defined $linestr;
         my $offset  = Devel::Declare::get_linestr_offset();
