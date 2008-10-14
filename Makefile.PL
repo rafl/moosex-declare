@@ -7,7 +7,8 @@ all_from 'lib/MooseX/Declare.pm';
 
 requires 'Devel::Declare';
 requires 'Scope::Guard';
-requires 'Moose';
 requires 'namespace::clean';
+requires 'Moose';
+requires 'MooseX::Method::Signatures' => '0.06';
 
 WriteAll;

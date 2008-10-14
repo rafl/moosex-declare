@@ -6,6 +6,7 @@ package MooseX::Declare;
 use Scope::Guard;
 use Devel::Declare ();
 use Moose::Meta::Class;
+use MooseX::Method::Signatures;
 
 our $VERSION = '0.01_01';
 
@@ -23,8 +24,10 @@ sub import {
     {
         no strict 'refs';
         *{ "${caller}::class" } = sub (&) { };
-        *{ "${caller}::role" } = sub (&) { };
+        *{ "${caller}::role"  } = sub (&) { };
     }
+
+    MooseX::Method::Signatures->setup_for($caller)
 }
 
 sub skip_declarator {
