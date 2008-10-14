@@ -1,17 +1,20 @@
 use strict;
 use warnings;
-use Test::More tests => 3;
+use Test::More tests => 4;
 use Test::Moose;
 
-use Moose::Declare;
+use MooseX::Declare;
 
-my $class = class {
+my $meta_class = class {
     has 'foo' => (
         is  => 'ro',
         isa => 'Str',
     );
 };
 
+isa_ok($meta_class, 'Moose::Meta::Class');
+
+my $class = $meta_class->name;
 meta_ok($class);
 can_ok($class, 'new');
 has_attribute_ok($class, 'foo');

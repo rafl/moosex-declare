@@ -189,7 +189,7 @@ sub parser {
         shadow(sub (&) { shift->(); return $name; });
     }
     else {
-        shadow(sub (&) { shift->(); return $anon->name });
+        shadow(sub (&) { shift->(); return $anon; });
     }
 }
 
