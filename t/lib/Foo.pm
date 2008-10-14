@@ -6,7 +6,7 @@ class Foo {
         isa => 'Str',
     );
 
-    method foo {}
+    method foo { 0 }
 
     class Bar is mutable {
         method bar {}
@@ -28,6 +28,8 @@ class Moo::Kooh {
 
     method kooh {}
     sub required_thing {}
+
+    around foo { 1 }
 }
 
 class Corge extends Foo::Bar with Role {

@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 17;
+use Test::More tests => 19;
 use Test::Moose;
 
 use FindBin;
@@ -17,6 +17,8 @@ BEGIN { use_ok('Foo'); }
     ok(!$pkg->can('has'));
     ok(!$pkg->can('inner'));
     ok($pkg->meta->is_immutable);
+
+    is($pkg->new->foo, 0);
 }
 
 {
@@ -38,4 +40,6 @@ BEGIN { use_ok('Foo'); }
     ok($pkg->isa('Foo'));
     can_ok($pkg, 'kooh');
     does_ok($pkg, 'Role');
+
+    is($pkg->new->foo, 1);
 }
