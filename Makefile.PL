@@ -6,6 +6,8 @@ name 'MooseX-Declare';
 all_from 'lib/MooseX/Declare.pm';
 
 requires 'Devel::Declare';
+requires 'Scope::Guard';
 requires 'Moose';
+requires 'namespace::clean';
 
 WriteAll;
