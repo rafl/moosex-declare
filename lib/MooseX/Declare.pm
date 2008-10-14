@@ -191,12 +191,12 @@ sub class_parser {
     my $inject_after = '';
 
     if ($Declarator eq 'class') {
-        $inject       .= q/use Moose qw{extends with has make_immutable};/;
+        $inject       .= q/use Moose qw{extends with has};/;
         $inject_after .= "${package}->meta->make_immutable;"
             unless exists $options->{is}->{mutable};
     }
     elsif ($Declarator eq 'role') {
-        $inject .= q/use Moose::Role qw{with requires excludes has make_immutable};/;
+        $inject .= q/use Moose::Role qw{with requires excludes has};/;
     }
     else { die }
 
