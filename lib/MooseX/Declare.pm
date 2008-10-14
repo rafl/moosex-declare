@@ -210,3 +210,32 @@ sub inject_scope {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+MooseX::Declare - Declarative syntax for Moose
+
+=head1 SYNOPSIS
+
+    class Foo {
+        has 'x' => (
+            is  => 'ro',
+            isa => 'Str',
+        );
+
+        method bar ($moo, $kooh) { ... }
+    }
+
+=head1 AUTHOR
+
+Florian Ragwitz E<lt>rafl@debian.orgE<gt>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (c) 2008  Florian Ragwitz
+
+Licensed under the same terms as perl itself.
+
+=cut
