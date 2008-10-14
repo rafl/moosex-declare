@@ -118,6 +118,7 @@ sub inject_if_block {
 
 sub scope_injector_call {
     my ($inject) = @_;
+    $inject ||= '';
 
     return "BEGIN { MooseX::Declare::inject_scope('${inject}') }; ";
 }
@@ -154,6 +155,8 @@ sub modifier_parser {
     my $name = strip_name;
     die 'method name expected'
         unless defined $name;
+
+    inject_if_block( scope_injector_call() );
 
     my $modifier_name = $Declarator;
     shadow(sub (&) {

@@ -26,10 +26,10 @@ class Moo::Kooh {
     extends 'Foo';
     with 'Role';
 
+    around foo  { 1 }
+
     method kooh {}
     sub required_thing {}
-
-    around foo { 1 }
 }
 
 class Corge extends Foo::Bar with Role {
