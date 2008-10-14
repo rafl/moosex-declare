@@ -1,0 +1,3 @@
+* Implement class Foo;
+* Only set up the matching declarators inside of class and role.
+  (i.e. no augment in role)
