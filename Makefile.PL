@@ -11,4 +11,6 @@ requires 'namespace::clean';
 requires 'Moose';
 requires 'MooseX::Method::Signatures' => '0.06';
 
+tests_recursive;
+
 WriteAll;
