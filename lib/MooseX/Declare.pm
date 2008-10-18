@@ -3,6 +3,7 @@ use warnings;
 
 package MooseX::Declare;
 
+use Sub::Uplevel;
 use Scope::Guard;
 use Devel::Declare ();
 use Moose::Meta::Class;
@@ -17,16 +18,18 @@ sub import {
 
     my @blocks    = qw/class role/;
     my @modifiers = qw/before after around override augment/;
+    my @keywords  = qw/super inner/;
 
     Devel::Declare->setup_for($caller => {
         (map { $_ => { const => \&class_parser    } } @blocks),
         (map { $_ => { const => \&modifier_parser } } @modifiers),
+        (map { $_ => { const => \&keyword_parser  } } @keywords),
     });
 
     {
         no strict 'refs';
         *{ "${caller}::${_}" } = sub (&) { }
-            for @blocks, @modifiers;
+            for @blocks, @modifiers, @keywords;
     }
 
     MooseX::Method::Signatures->setup_for($caller)
@@ -146,6 +149,20 @@ sub options_unwrap {
     }
 
     return $ret;
+}
+
+sub keyword_parser {
+    local ($Declarator, $Offset) = @_;
+
+    skip_declarator;
+    skipspace;
+
+    my $linestr = Devel::Declare::get_linestr;
+    substr($linestr, $Offset, 0) = '{}';
+    Devel::Declare::set_linestr($linestr);
+
+    my $meth = Moose->can($Declarator);
+    shadow(sub (&) { uplevel 1, $meth });
 }
 
 sub modifier_parser {
