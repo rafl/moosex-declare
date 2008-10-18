@@ -8,6 +8,10 @@ class Foo {
 
     method foo ($x) { $x }
 
+    method bar ($moo) { "outer(${moo})-" . inner() }
+
+    method inner {}
+
     class Bar is mutable {
         method bar {}
     }
@@ -27,6 +31,8 @@ class Moo::Kooh {
     with 'Role';
 
     around foo ($x) { $x + 1 }
+
+    augment bar ($moo) { "inner(${moo})" }
 
     method kooh {}
     sub required_thing {}

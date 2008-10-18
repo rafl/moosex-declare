@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 21;
+use Test::More tests => 22;
 use Test::Moose;
 
 use FindBin;
@@ -12,10 +12,10 @@ BEGIN { use_ok('Foo'); }
     my $pkg = 'Foo';
     meta_ok($pkg);
     has_attribute_ok($pkg, 'affe');
-    can_ok($pkg, 'affe');
-    can_ok($pkg, 'foo');
+    can_ok($pkg, $_)
+        for qw/affe foo inner/;
     ok(!$pkg->can($_))
-        for qw/has inner method override/;
+        for qw/has method override/;
     ok($pkg->meta->is_immutable);
 
     is($pkg->new->foo(42), 42);
@@ -41,5 +41,7 @@ BEGIN { use_ok('Foo'); }
     can_ok($pkg, 'kooh');
     does_ok($pkg, 'Role');
 
-    is($pkg->new->foo(42), 43);
+    my $o = $pkg->new;
+    is($o->foo(42), 43);
+    is($o->bar(23), 'outer(23)-inner(23)');
 }

@@ -18,18 +18,16 @@ sub import {
 
     my @blocks    = qw/class role/;
     my @modifiers = qw/before after around override augment/;
-    my @keywords  = qw/super inner/;
 
     Devel::Declare->setup_for($caller => {
         (map { $_ => { const => \&class_parser    } } @blocks),
         (map { $_ => { const => \&modifier_parser } } @modifiers),
-        (map { $_ => { const => \&keyword_parser  } } @keywords),
     });
 
     {
         no strict 'refs';
         *{ "${caller}::${_}" } = sub (&) { }
-            for @blocks, @modifiers, @keywords;
+            for @blocks, @modifiers;
     }
 
     MooseX::Method::Signatures->setup_for($caller)
@@ -231,7 +229,7 @@ sub class_parser {
     my $inject_after = '';
 
     if ($Declarator eq 'class') {
-        $inject       .= q/use Moose qw{extends with has};/;
+        $inject       .= q/use Moose qw{extends with has inner super};/;
         $inject_after .= "${package}->meta->make_immutable;"
             unless exists $options->{is}->{mutable};
     }
