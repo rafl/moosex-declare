@@ -108,14 +108,33 @@ sub strip_options {
     } keys %ret };
 }
 
+sub strip_proto {
+    skipspace;
+
+    my $linestr = Devel::Declare::get_linestr();
+    if (substr($linestr, $Offset, 1) eq '(') {
+        my $length = Devel::Declare::toke_scan_str($Offset);
+        my $proto  = Devel::Declare::get_lex_stuff();
+        Devel::Declare::clear_lex_stuff();
+        $linestr = Devel::Declare::get_linestr();
+        substr($linestr, $Offset, $length) = '';
+        Devel::Declare::set_linestr($linestr);
+        return $proto;
+    }
+
+    return;
+}
+
 sub inject_if_block {
     my $inject = shift;
+    my $inject_before = shift || '';
 
     skipspace;
 
     my $linestr = Devel::Declare::get_linestr;
     if (substr($linestr, $Offset, 1) eq '{') {
         substr($linestr, $Offset+1, 0) = $inject;
+        substr($linestr, $Offset, 0) = $inject_before;
         Devel::Declare::set_linestr($linestr);
     }
 }
@@ -173,12 +192,17 @@ sub modifier_parser {
     die 'method name expected'
         unless defined $name;
 
-    inject_if_block( scope_injector_call() );
+    my $proto = strip_proto || '';
+
+    $proto = '$orig: $self' . (length $proto ? ", ${proto}" : '')
+        if $Declarator eq 'around';
+
+    inject_if_block( scope_injector_call('};'), "{ method (${proto})" );
 
     my $meth = Moose->can($Declarator);
     shadow(sub (&) {
         my $class = caller();
-        $meth->($class, $name, shift);
+        $meth->($class, $name, shift->()->body);
     });
 }
 
