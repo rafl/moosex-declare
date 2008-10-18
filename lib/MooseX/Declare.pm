@@ -168,19 +168,6 @@ sub options_unwrap {
     return $ret;
 }
 
-sub keyword_parser {
-    local ($Declarator, $Offset) = @_;
-
-    skip_declarator;
-
-    my $linestr = Devel::Declare::get_linestr;
-    substr($linestr, $Offset, 0) = '{}';
-    Devel::Declare::set_linestr($linestr);
-
-    my $meth = Moose->can($Declarator);
-    shadow(sub (&) { uplevel 1, $meth });
-}
-
 sub modifier_parser {
     local ($Declarator, $Offset) = @_;
 
