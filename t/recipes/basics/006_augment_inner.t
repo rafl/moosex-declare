@@ -31,7 +31,6 @@ class Document::Page {
 
 class Document::PageWithHeadersAndFooters extends Document::Page {
     augment create {
-        my $self = shift;
         $self->create_header;
         inner;
         $self->create_footer;
@@ -43,7 +42,6 @@ class Document::PageWithHeadersAndFooters extends Document::Page {
 
 class TPSReport extends Document::PageWithHeadersAndFooters {
     augment create {
-        my $self = shift;
         $self->create_tps_report;
     }
 

@@ -22,7 +22,6 @@ class Point3D extends Point {
     has 'z' => (isa => 'Int', is => 'rw', required => 1);
 
     after clear {
-        my $self = shift;
         $self->z(0);
     }
 }

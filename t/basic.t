@@ -18,7 +18,7 @@ BEGIN { use_ok('Foo'); }
         for qw/has inner method override/;
     ok($pkg->meta->is_immutable);
 
-    is($pkg->new->foo, 0);
+    is($pkg->new->foo(42), 42);
 }
 
 {
@@ -41,5 +41,5 @@ BEGIN { use_ok('Foo'); }
     can_ok($pkg, 'kooh');
     does_ok($pkg, 'Role');
 
-    is($pkg->new->foo, 1);
+    is($pkg->new->foo(42), 43);
 }

@@ -27,8 +27,7 @@ class BankAccount {
 class CheckingAccount extends BankAccount {
     has 'overdraft_account' => ( isa => 'BankAccount', is => 'rw' );
 
-    before withdraw {
-        my ( $self, $amount ) = @_;
+    before withdraw ($amount) {
         my $overdraft_amount = $amount - $self->balance();
         if ( $self->overdraft_account && $overdraft_amount > 0 ) {
             $self->overdraft_account->withdraw($overdraft_amount);
