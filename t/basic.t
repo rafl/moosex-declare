@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 22;
+use Test::More tests => 23;
 use Test::Moose;
 
 use FindBin;
@@ -18,7 +18,9 @@ BEGIN { use_ok('Foo'); }
         for qw/has method override/;
     ok($pkg->meta->is_immutable);
 
-    is($pkg->new->foo(42), 42);
+    my $o = $pkg->new;
+    is($o->foo(42), 42);
+    is($o->inner, 23);
 }
 
 {

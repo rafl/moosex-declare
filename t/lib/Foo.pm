@@ -8,9 +8,9 @@ class Foo {
 
     method foo ($x) { $x }
 
-    method bar ($moo) { "outer(${moo})-" . inner() }
+    method inner { 23 }
 
-    method inner {}
+    method bar ($moo) { "outer(${moo})-" . inner() }
 
     class Bar is mutable {
         method bar {}
