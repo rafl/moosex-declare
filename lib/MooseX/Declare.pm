@@ -155,7 +155,6 @@ sub keyword_parser {
     local ($Declarator, $Offset) = @_;
 
     skip_declarator;
-    skipspace;
 
     my $linestr = Devel::Declare::get_linestr;
     substr($linestr, $Offset, 0) = '{}';
