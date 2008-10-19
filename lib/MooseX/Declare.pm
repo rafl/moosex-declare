@@ -315,6 +315,14 @@ MooseX::Declare - Declarative syntax for Moose
         }
     }
 
+=head1 SEE ALSO
+
+L<Moose>
+
+L<Moose::Role>
+
+L<MooseX::Method::Signatures>
+
 =head1 AUTHOR
 
 Florian Ragwitz E<lt>rafl@debian.orgE<gt>
