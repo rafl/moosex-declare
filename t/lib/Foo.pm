@@ -35,12 +35,12 @@ class Moo::Kooh {
     augment bar ($moo) { "inner(${moo})" }
 
     method kooh {}
-    sub required_thing {}
+    method required_thing {}
 }
 
 class Corge extends Foo::Bar with Role {
     method corge {}
-    sub required_thing {}
+    method required_thing {}
 }
 
 class Quux extends Corge {

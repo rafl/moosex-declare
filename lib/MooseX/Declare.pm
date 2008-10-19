@@ -11,10 +11,12 @@ use MooseX::Method::Signatures;
 
 our $VERSION = '0.01_01';
 
-our ($Declarator, $Offset);
+our ($Declarator, $Offset, @Roles);
 
 sub import {
     my ($class, $type) = @_;
+    $type ||= '';
+
     my $caller = caller();
 
     my @blocks    = qw/class role/;
@@ -38,6 +40,9 @@ sub import {
         no strict 'refs';
         *{ "${caller}::${_}" } = sub (&) { }
             for @exported;
+
+        *{ "${caller}::with" } = sub { push @Roles, @_; }
+            if $type eq 'inner';
     }
 
     MooseX::Method::Signatures->setup_for($caller)
@@ -226,12 +231,12 @@ sub class_parser {
     my $inject_after = '';
 
     if ($Declarator eq 'class') {
-        $inject       .= q/use Moose qw{extends with has inner super confess blessed};/;
+        $inject       .= q/use Moose qw{extends has inner super confess blessed};/;
         $inject_after .= "${package}->meta->make_immutable;"
             unless exists $options->{is}->{mutable};
     }
     elsif ($Declarator eq 'role') {
-        $inject .= q/use Moose::Role qw{with requires excludes has extends super inner confess blessed};/;
+        $inject .= q/use Moose::Role qw{requires excludes has extends super inner confess blessed};/;
     }
     else { die }
 
@@ -244,11 +249,18 @@ sub class_parser {
 
     inject_if_block($inject);
 
+    my $create_class = sub {
+        local @Roles = ();
+        shift->();
+        Moose->can('with')->($package, @Roles)
+            if @Roles;
+    };
+
     if (defined $name) {
-        shadow(sub (&) { shift->(); return $name; });
+        shadow(sub (&) { $create_class->(@_); return $name; });
     }
     else {
-        shadow(sub (&) { shift->(); return $anon; });
+        shadow(sub (&) { $create_class->(@_); return $anon; });
     }
 }
 
