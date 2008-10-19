@@ -221,7 +221,7 @@ sub class_parser {
             unless exists $options->{is}->{mutable};
     }
     elsif ($Declarator eq 'role') {
-        $inject .= q/use Moose::Role qw{with requires excludes has};/;
+        $inject .= q/use Moose::Role qw{with requires excludes has extends super inner};/;
     }
     else { die }
 
