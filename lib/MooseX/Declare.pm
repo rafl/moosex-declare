@@ -14,20 +14,30 @@ our $VERSION = '0.01_01';
 our ($Declarator, $Offset);
 
 sub import {
+    my ($class, $type) = @_;
     my $caller = caller();
 
     my @blocks    = qw/class role/;
     my @modifiers = qw/before after around override augment/;
 
+    my @exported = @blocks;
+
     Devel::Declare->setup_for($caller => {
-        (map { $_ => { const => \&class_parser    } } @blocks),
-        (map { $_ => { const => \&modifier_parser } } @modifiers),
+        (map { $_ => { const => \&class_parser } } @blocks),
     });
+
+    if (defined $type && $type eq 'inner') {
+        Devel::Declare->setup_for($caller => {
+            (map { $_ => { const => \&modifier_parser } } @modifiers),
+        });
+
+        push @exported, @modifiers;
+    }
 
     {
         no strict 'refs';
         *{ "${caller}::${_}" } = sub (&) { }
-            for @blocks, @modifiers;
+            for @exported;
     }
 
     MooseX::Method::Signatures->setup_for($caller)
@@ -212,7 +222,7 @@ sub class_parser {
         $package = $anon->name;
     }
 
-    my $inject = qq/package ${package}; use MooseX::Declare; /;
+    my $inject = qq/package ${package}; use MooseX::Declare 'inner'; /;
     my $inject_after = '';
 
     if ($Declarator eq 'class') {

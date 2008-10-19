@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 4;
+use Test::More tests => 5;
 use Test::Moose;
 
 use MooseX::Declare;
@@ -18,3 +18,5 @@ my $class = $meta_class->name;
 meta_ok($class);
 can_ok($class, 'new');
 has_attribute_ok($class, 'foo');
+
+ok(!__PACKAGE__->can('augment'));
