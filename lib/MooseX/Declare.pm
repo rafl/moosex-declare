@@ -216,12 +216,12 @@ sub class_parser {
     my $inject_after = '';
 
     if ($Declarator eq 'class') {
-        $inject       .= q/use Moose qw{extends with has inner super};/;
+        $inject       .= q/use Moose qw{extends with has inner super confess blessed};/;
         $inject_after .= "${package}->meta->make_immutable;"
             unless exists $options->{is}->{mutable};
     }
     elsif ($Declarator eq 'role') {
-        $inject .= q/use Moose::Role qw{with requires excludes has extends super inner};/;
+        $inject .= q/use Moose::Role qw{with requires excludes has extends super inner confess blessed};/;
     }
     else { die }
 
