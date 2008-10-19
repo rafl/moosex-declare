@@ -290,15 +290,14 @@ MooseX::Declare - Declarative syntax for Moose
     class BankAccount {
         has 'balance' => ( isa => 'Num', is => 'rw', default => 0 );
 
-        method deposit ($amount) {
+        method deposit (Num $amount) {
             $self->balance( $self->balance + $amount );
         }
 
-        method withdraw ($amount) {
+        method withdraw (Num $amount) {
             my $current_balance = $self->balance();
             ( $current_balance >= $amount )
-                || die "Account overdrawn";
-                # TODO: make confess available in methods
+                || confess "Account overdrawn";
             $self->balance( $current_balance - $amount );
         }
     }
@@ -306,7 +305,7 @@ MooseX::Declare - Declarative syntax for Moose
     class CheckingAccount extends BankAccount {
         has 'overdraft_account' => ( isa => 'BankAccount', is => 'rw' );
 
-        before withdraw ($amount) {
+        before withdraw (Num $amount) {
             my $overdraft_amount = $amount - $self->balance();
             if ( $self->overdraft_account && $overdraft_amount > 0 ) {
                 $self->overdraft_account->withdraw($overdraft_amount);
@@ -314,6 +313,87 @@ MooseX::Declare - Declarative syntax for Moose
             }
         }
     }
+
+=head1 DESCRIPTION
+
+This module provides syntactic sugar for Moose, the postmodern object system
+for Perl 5. When used, it sets up the C<class> and C<role> keywords.
+
+=head1 KEYWORDS
+
+=head2 class
+
+    class Foo { ... }
+
+    my $anon_class = class { ... };
+
+Declares a new class. The class can be either named or anonymous, depending on
+whether or not a classname is given. Within the class definition Moose and
+MooseX::Method::Signatures are set up automatically in addition to the other
+keywords described in this document. At the end of the definition the class
+will be made immutable.
+
+It's possible to specify options for classes:
+
+=over 4
+
+=item extends
+
+    class Foo extends Bar { ... }
+
+Sets a superclass for the class being declared.
+
+=item with
+
+    class Foo with Role { ... }
+
+Applies a role to the class being declared.
+
+=item is mutable
+
+    class Foo is mutable { ... }
+
+Causes the class not to be made immutable after its definition.
+
+=back
+
+=head2 role
+
+    role Foo { ... }
+
+    my $anon_role = role { ... };
+
+Declares a new role. The role can be either named or anonymous, depending on
+wheter or not a name is given. Within the role definition Moose::Role and
+MooseX::Method::Signatures are set up automatically in addition to the other
+keywords described in this document.
+
+It's possible to specify options for roles:
+
+=over 4
+
+=item with
+
+    role Foo with Bar { ... }
+
+Applies a role to the role being declared.
+
+=back
+
+=head2 before / after / around / override / augment
+
+    before   foo ($x, $y, $z) { ... }
+    after    bar ($x, $y, $z) { ... }
+    around   baz ($x, $y, $z) { ... }
+    override moo ($x, $y, $z) { ... }
+    augment  kuh ($x, $y, $z) { ... }
+
+Add a method modifier. Those work like documented in L<Moose|Moose>, except for
+the slightly nicer syntax and the method signatures, which work like documented
+in L<MooseX::Method::Signatures|MooseX::Method::Signatures>.
+
+For the C<around> modifier an additional argument called C<$orig> is
+automatically set up as the invocant for the method.
 
 =head1 SEE ALSO
 
