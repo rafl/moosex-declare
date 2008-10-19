@@ -1,7 +1,8 @@
 use strict;
 use warnings;
-use Test::More tests => 23;
+use Test::More tests => 24;
 use Test::Moose;
+use Test::Exception;
 
 use FindBin;
 use lib "$FindBin::Bin/lib";
@@ -28,6 +29,9 @@ BEGIN { use_ok('Foo'); }
     meta_ok($pkg);
     can_ok($pkg, 'bar');
     ok(!$pkg->meta->is_immutable);
+    lives_ok(sub {
+        $pkg->new->bar;
+    });
 }
 
 {

@@ -13,7 +13,7 @@ class Foo {
     method bar ($moo) { "outer(${moo})-" . inner() }
 
     class Bar is mutable {
-        method bar {}
+        method bar { blessed($_[0]) ? 0 : 1 }
     }
 
     class Baz {
