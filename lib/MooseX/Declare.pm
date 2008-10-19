@@ -285,13 +285,34 @@ MooseX::Declare - Declarative syntax for Moose
 
 =head1 SYNOPSIS
 
-    class Foo extends Bar {
-        has 'x' => (
-            is  => 'ro',
-            isa => 'Str',
-        );
+    use MooseX::Declare;
 
-        method bar ($moo, $kooh) { ... }
+    class BankAccount {
+        has 'balance' => ( isa => 'Num', is => 'rw', default => 0 );
+
+        method deposit ($amount) {
+            $self->balance( $self->balance + $amount );
+        }
+
+        method withdraw ($amount) {
+            my $current_balance = $self->balance();
+            ( $current_balance >= $amount )
+                || die "Account overdrawn";
+                # TODO: make confess available in methods
+            $self->balance( $current_balance - $amount );
+        }
+    }
+
+    class CheckingAccount extends BankAccount {
+        has 'overdraft_account' => ( isa => 'BankAccount', is => 'rw' );
+
+        before withdraw ($amount) {
+            my $overdraft_amount = $amount - $self->balance();
+            if ( $self->overdraft_account && $overdraft_amount > 0 ) {
+                $self->overdraft_account->withdraw($overdraft_amount);
+                $self->deposit($overdraft_amount);
+            }
+        }
     }
 
 =head1 AUTHOR
