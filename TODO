@@ -1,3 +1,5 @@
 * Implement class Foo;
 * Only set up the matching declarators inside of class and role.
   (i.e. no augment in role)
+* Implemet subclass { ... }, meaning class Foo extends OuterClass { ... } for
+  nested classes.
