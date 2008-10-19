@@ -12,7 +12,8 @@ requires 'Moose';
 requires 'MooseX::Method::Signatures' => '0.06';
 
 test_requires 'Test::Exception';
-
 tests_recursive;
+
+makemaker_args(dist => { PREOP => 'pod2text lib/MooseX/Declare.pm > README' });
 
 WriteAll;
