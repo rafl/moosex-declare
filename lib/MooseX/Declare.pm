@@ -3,7 +3,6 @@ use warnings;
 
 package MooseX::Declare;
 
-use Sub::Uplevel;
 use Devel::Declare ();
 use Moose::Meta::Class;
 use B::Hooks::EndOfScope;
