@@ -4,9 +4,9 @@ use warnings;
 package MooseX::Declare;
 
 use Sub::Uplevel;
-use Scope::Guard;
 use Devel::Declare ();
 use Moose::Meta::Class;
+use B::Hooks::EndOfScope;
 use MooseX::Method::Signatures;
 
 our $VERSION = '0.01_01';
@@ -245,14 +245,13 @@ sub class_parser {
 sub inject_scope {
     my ($inject) = @_;
 
-    $^H |= 0x120000;
-    $^H{MX_DECLARE_SCOPING} = Scope::Guard->new(sub {
+    on_scope_end {
         my $linestr = Devel::Declare::get_linestr();
         return unless defined $linestr;
         my $offset  = Devel::Declare::get_linestr_offset();
         substr($linestr, $offset, 0) = ';' . $inject;
         Devel::Declare::set_linestr($linestr);
-    });
+    };
 }
 
 1;
