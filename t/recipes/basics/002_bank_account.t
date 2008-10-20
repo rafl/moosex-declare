@@ -11,15 +11,14 @@ use MooseX::Declare;
 class BankAccount {
     has 'balance' => ( isa => 'Num', is => 'rw', default => 0 );
 
-    method deposit ($amount) {
+    method deposit (Num $amount) {
         $self->balance( $self->balance + $amount );
     }
 
-    method withdraw ($amount) {
+    method withdraw (Num $amount) {
         my $current_balance = $self->balance();
         ( $current_balance >= $amount )
-            || die "Account overdrawn";
-            # TODO: make confess available in methods
+            || confess "Account overdrawn";
         $self->balance( $current_balance - $amount );
     }
 }
@@ -27,7 +26,7 @@ class BankAccount {
 class CheckingAccount extends BankAccount {
     has 'overdraft_account' => ( isa => 'BankAccount', is => 'rw' );
 
-    before withdraw ($amount) {
+    before withdraw (Num $amount) {
         my $overdraft_amount = $amount - $self->balance();
         if ( $self->overdraft_account && $overdraft_amount > 0 ) {
             $self->overdraft_account->withdraw($overdraft_amount);
