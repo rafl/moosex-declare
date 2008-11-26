@@ -18,8 +18,8 @@ sub import {
 
     my $caller = caller();
 
-    my @blocks    = qw/class role/;
-    my @modifiers = qw/before after around override augment/;
+    my @blocks       = qw/class role/;
+    my @modifiers    = qw/before after around override augment/;
 
     my @exported = @blocks;
 
