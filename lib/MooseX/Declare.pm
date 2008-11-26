@@ -10,7 +10,7 @@ use MooseX::Method::Signatures;
 
 our $VERSION = '0.01_01';
 
-our ($Declarator, $Offset, @Outer_Stack, @Roles);
+our ($Declarator, $Offset, %Outer_Stack, @Roles);
 
 sub import {
     my ($class, $type, %args) = @_;
@@ -34,7 +34,10 @@ sub import {
 
         push @exported, @modifiers;
 
-        push @Outer_Stack, $args{outer_package} if $args{outer_package};
+        if (exists $args{file}) {
+            $Outer_Stack{ $args{file} } ||= [];
+            push @{ $Outer_Stack{ $args{file} } }, $args{outer_package};
+        }
     }
 
     {
@@ -218,15 +221,17 @@ sub class_parser {
     my ($package, $anon);
 
     if (defined $name) {
+        use Data::Dump qw/dump/;
         $package = $name;
-        $package = join('::', $Outer_Stack[-1], $package) if @Outer_Stack;
+        my $outer_stack = $Outer_Stack{ (caller(1))[1] };
+        $package = join('::', $outer_stack->[-1], $package) if $outer_stack && @{ $outer_stack };
     }
     else {
         $anon = Moose::Meta::Class->create_anon_class;
         $package = $anon->name;
     }
 
-    my $inject = qq/package ${package}; use MooseX::Declare 'inner', outer_package => '${package}'; /;
+    my $inject = qq/package ${package}; use MooseX::Declare 'inner', outer_package => '${package}', file => __FILE__; /;
     my $inject_after = '';
 
     if ($Declarator eq 'class') {
@@ -242,7 +247,7 @@ sub class_parser {
     $inject .= 'use namespace::clean -except => [qw/meta/];';
     $inject .= options_unwrap($options);
 
-    $inject_after .= 'BEGIN { pop @MooseX::Declare::Outer_Stack }';
+    $inject_after .= 'BEGIN { my $file = __FILE__; my $outer = $MooseX::Declare::Outer_Stack{$file}; pop @{ $outer } if $outer && @{ $outer } }';
 
     if (defined $name) {
         $inject .= scope_injector_call($inject_after);
