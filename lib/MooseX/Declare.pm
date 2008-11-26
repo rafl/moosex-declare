@@ -10,10 +10,10 @@ use MooseX::Method::Signatures;
 
 our $VERSION = '0.01_01';
 
-our ($Declarator, $Offset, @Roles);
+our ($Declarator, $Offset, @Outer_Stack, @Roles);
 
 sub import {
-    my ($class, $type) = @_;
+    my ($class, $type, %args) = @_;
     $type ||= '';
 
     my $caller = caller();
@@ -33,6 +33,8 @@ sub import {
         });
 
         push @exported, @modifiers;
+
+        push @Outer_Stack, $args{outer_package} if $args{outer_package};
     }
 
     {
@@ -217,16 +219,14 @@ sub class_parser {
 
     if (defined $name) {
         $package = $name;
-        my $stash = Devel::Declare::get_curstash_name();
-        $package = join('::', $stash, $name)
-            unless $stash eq 'main';
+        $package = join('::', $Outer_Stack[-1], $package) if @Outer_Stack;
     }
     else {
         $anon = Moose::Meta::Class->create_anon_class;
         $package = $anon->name;
     }
 
-    my $inject = qq/package ${package}; use MooseX::Declare 'inner'; /;
+    my $inject = qq/package ${package}; use MooseX::Declare 'inner', outer_package => '${package}'; /;
     my $inject_after = '';
 
     if ($Declarator eq 'class') {
@@ -241,6 +241,8 @@ sub class_parser {
 
     $inject .= 'use namespace::clean -except => [qw/meta/];';
     $inject .= options_unwrap($options);
+
+    $inject_after .= 'BEGIN { pop @MooseX::Declare::Outer_Stack }';
 
     if (defined $name) {
         $inject .= scope_injector_call($inject_after);
