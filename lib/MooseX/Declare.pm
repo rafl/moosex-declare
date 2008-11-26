@@ -8,7 +8,7 @@ use Moose::Meta::Class;
 use B::Hooks::EndOfScope;
 use MooseX::Method::Signatures;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 our ($Declarator, $Offset, %Outer_Stack, @Roles);
 

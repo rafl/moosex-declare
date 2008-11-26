@@ -1,3 +1,6 @@
+0.02  Wed, 26 Nov 2008 14:20:08 +0100
+  * Bump Devel::Declare prerequisite to 0.003000.
+
 0.01  Wed, 26 Nov 2008 12:07:16 +0100
   * More tests.
   * Improve class nesting.
