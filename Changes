@@ -1,3 +1,6 @@
+0.03  Sat, 29 Nov 2008 14:24:48 +0100
+  * Remove debugging code I accidentally left in th last release.
+
 0.02  Wed, 26 Nov 2008 14:20:08 +0100
   * Bump Devel::Declare prerequisite to 0.003000.
 
