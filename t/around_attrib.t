@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 3;
+use Test::More tests => 2;
 use Test::Exception;
 
 use MooseX::Declare;
@@ -27,11 +27,7 @@ lives_ok {
     $vh->value();
 } 'value() should not die';
 
-SKIP: {
-    lives_ok {
-        $vh = ValueHolder->new;
-        is $vh->method1 => 1, 'method1() should only get 1 element in @_';
-    } 'nor should method1()';
-
-    skip 'method1() threw an exception', 1 if $@;
-}
+lives_and {
+    $vh = ValueHolder->new;
+    is $vh->method1 => 1, 'method1() should only get 1 element in @_';
+} 'nor should method1()';
