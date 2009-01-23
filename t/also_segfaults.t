@@ -2,9 +2,9 @@
 
 use Test::More tests => 1;
 use MooseX::Declare;
-class BreakingClass {
+class BreakingClass is mutable {
     method causes_segfault () {
         delete $self->hash_attrib('key');
    }
 }
-ok 1 => "Segfault, be gone!";
+ok 1 => "It's alive!";
