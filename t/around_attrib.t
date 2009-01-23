@@ -20,14 +20,11 @@ class ValueHolder {
         +@_;
     }
 }
-my $vh;
 
 lives_ok {
-    $vh = ValueHolder->new(value => 22);
-    $vh->value();
+    ValueHolder->new(value => 22)->value;
 } 'value() should not die';
 
 lives_and {
-    $vh = ValueHolder->new;
-    is $vh->method1 => 1, 'method1() should only get 1 element in @_';
+    is(ValueHolder->new->method1, 1, 'method1() should only get 1 element in @_');
 } 'nor should method1()';
