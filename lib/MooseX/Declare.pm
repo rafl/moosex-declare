@@ -115,6 +115,7 @@ sub strip_options {
         Devel::Declare::set_linestr($linestr);
 
         skipspace;
+        $linestr = Devel::Declare::get_linestr();
     }
 
     return { map {
