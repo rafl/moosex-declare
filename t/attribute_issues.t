@@ -3,8 +3,6 @@ use Test::Warn;
 use Test::Exception;
 use MooseX::Declare;
 
-use feature ':5.10';
-
 class UnderTest {
     method pass_through (:$param?) {
         $param;
@@ -15,7 +13,7 @@ class UnderTest {
     }
 
     method pass_through3 ($value?) {
-        $value // 'default';
+        $value || 'default';
     }
 }
 
