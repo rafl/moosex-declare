@@ -338,7 +338,7 @@ Declares a new class. The class can be either named or anonymous, depending on
 whether or not a classname is given. Within the class definition Moose and
 MooseX::Method::Signatures are set up automatically in addition to the other
 keywords described in this document. At the end of the definition the class
-will be made immutable.
+will be made immutable. namespace::clean is injected to clean up Moose for you.
 
 It's possible to specify options for classes:
 
@@ -373,7 +373,8 @@ Causes the class not to be made immutable after its definition.
 Declares a new role. The role can be either named or anonymous, depending on
 wheter or not a name is given. Within the role definition Moose::Role and
 MooseX::Method::Signatures are set up automatically in addition to the other
-keywords described in this document.
+keywords described in this document. Again, namespace::clean is injected to
+clean up Moose::Role and for you.
 
 It's possible to specify options for roles:
 
@@ -409,6 +410,8 @@ L<Moose>
 L<Moose::Role>
 
 L<MooseX::Method::Signatures>
+
+L<namespace::clean>
 
 =head1 AUTHOR
 
