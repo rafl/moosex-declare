@@ -1,3 +1,13 @@
+0.04  Sat, 21 Feb 2009 22:41:01 +0100
+  * Fix a parsing bug related to class declarations with options being on
+    another line than the opening '{'.
+  * Depend on the latest MooseX::Method::Signatures.
+  * Added a test to catch weirdness in around filters and optional positionals
+    (Piers Cawley).
+  * Added a test for a segfault caused by a syntax error (Piers Cawley).
+  * Test for has +foo feature which does not work yet due to roles being
+    applied at the end (Tomas Doran).
+
 0.03  Sat, 29 Nov 2008 14:24:48 +0100
   * Remove debugging code I accidentally left in th last release.
 
