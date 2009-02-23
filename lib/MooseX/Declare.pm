@@ -7,6 +7,7 @@ use Devel::Declare ();
 use Moose::Meta::Class;
 use B::Hooks::EndOfScope;
 use MooseX::Method::Signatures;
+use Moose::Util qw/find_meta/;;
 
 our $VERSION = '0.05';
 
@@ -258,7 +259,7 @@ sub class_parser {
     my $create_class = sub {
         local @Roles = ();
         shift->();
-        Moose->can('with')->($package, @Roles)
+        Moose::Util::apply_all_roles(find_meta($package), @Roles)
             if @Roles;
     };
 
