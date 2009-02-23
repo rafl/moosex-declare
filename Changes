@@ -1,3 +1,10 @@
+0.05  Mon, 23 Feb 2009 08:33:16 +0100
+  * Depend on the latest MooseX::Method::Signatures.
+  * UnTODO passing tests.
+  * Docs now mention namespace::clean (Ash Berlin).
+  * Add tests some more problematic signatures (Piers Cawley).
+   + Make those work.
+
 0.04  Sat, 21 Feb 2009 22:41:01 +0100
   * Fix a parsing bug related to class declarations with options being on
     another line than the opening '{'.
