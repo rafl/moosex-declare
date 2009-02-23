@@ -204,10 +204,10 @@ sub modifier_parser {
 
     inject_if_block( scope_injector_call('};'), "{ method (${proto})" );
 
-    my $meth = Moose->can($Declarator);
+    my $modifier_name = $Declarator;
     shadow(sub (&) {
         my $class = caller();
-        $meth->($class, $name, shift->()->body);
+        Moose::Util::add_method_modifier($class, $modifier_name, [$name => shift->()->body]);
     });
 }
 
