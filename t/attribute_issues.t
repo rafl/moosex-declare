@@ -18,7 +18,7 @@ class UnderTest {
 }
 
 warnings_are {
-    is(UnderTest->new->pass_through("send reinforcements, we're going to advance")
+    is(UnderTest->new->pass_through(param => "send reinforcements, we're going to advance")
        => "send reinforcements, we're going to advance",
        "send three and fourpence, we're going to a dance");
 } [], "silence is golden";
