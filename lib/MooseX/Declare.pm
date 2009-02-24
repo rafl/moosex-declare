@@ -19,6 +19,9 @@ sub import {
 
     my $caller = caller();
 
+    strict->import;
+    warnings->import;
+
     my @blocks       = qw/class role/;
     my @modifiers    = qw/before after around override augment/;
 
