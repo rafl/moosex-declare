@@ -421,6 +421,20 @@ L<namespace::clean>
 
 Florian Ragwitz E<lt>rafl@debian.orgE<gt>
 
+With contributions from:
+
+=over 4
+
+=item Ash Berlin E<lt>ash@cpan.orgE<gt>
+
+=item Piers Cawley E<lt>pdcawley@bofh.org.ukE<gt>
+
+=item Tomas Doran E<lt>bobtfish@bobtfish.netE<gt>
+
+=item Yanick Champoux E<lt>yanick@babyl.dyndns.orgE<gt>
+
+=back
+
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (c) 2008, 2009  Florian Ragwitz
