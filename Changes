@@ -1,3 +1,10 @@
+0.06  Tue, 24 Feb 2009 07:20:03 +0100
+  * Automatically import strict and warnings.
+  * Don't use the Moose sugar sugar methods for installing modifiers.
+  * Don't use the Moose sugar functions for applying roles.
+  * Use Test::NoWarnings instead of Test::Warn.
+  * Declare test dependency on Test::NoWarnings.
+
 0.05  Mon, 23 Feb 2009 08:33:16 +0100
   * Depend on the latest MooseX::Method::Signatures.
   * UnTODO passing tests.
