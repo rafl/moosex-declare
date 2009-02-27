@@ -206,12 +206,19 @@ sub modifier_parser {
     $proto = '$orig: $self' . (length $proto ? ", ${proto}" : '')
         if $Declarator eq 'around';
 
-    inject_if_block( scope_injector_call('};'), "{ method (${proto})" );
+    my $method = MooseX::Method::Signatures::Meta::Method->wrap(
+        signature    => qq{(${proto})},
+        package_name => Devel::Declare::get_curstash_name,
+        name         => $name,
+    );
+
+    inject_if_block( scope_injector_call() . $method->injectable_code );
 
     my $modifier_name = $Declarator;
     shadow(sub (&) {
         my $class = caller();
-        Moose::Util::add_method_modifier($class, $modifier_name, [$name => shift->()->body]);
+        $method->_set_actual_body(shift);
+        Moose::Util::add_method_modifier($class, $modifier_name, [$name => $method->body]);
     });
 }
 
