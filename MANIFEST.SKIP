@@ -1,9 +1,9 @@
 ^\.
 build\b
 blib\b
-\.(?:bak|o|c|bs)$
+\.(?:bak|o|c|bs|swp)$
 ^Makefile$
 ^Makefile.old$
 ^Debian
 ^MooseX-Declare-
-^(?:t/segfault_syntax_error\.t|t/attribute_issues\.t)$
+^(?:t/segfault_syntax_error\.t)$

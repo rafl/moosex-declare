@@ -9,9 +9,10 @@ requires 'Devel::Declare' => '0.003000';
 requires 'B::Hooks::EndOfScope';
 requires 'namespace::clean';
 requires 'Moose';
-requires 'MooseX::Method::Signatures' => '0.07';
+requires 'MooseX::Method::Signatures' => '0.10';
 
 test_requires 'Test::Exception';
+test_requires 'Test::NoWarnings';
 tests_recursive;
 
 makemaker_args(dist => { PREOP => 'pod2text lib/MooseX/Declare.pm > README' });

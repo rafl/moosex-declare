@@ -21,14 +21,10 @@ class ValueHolder {
     }
 }
 
-TODO: {
-    local $TODO = 'buggy optional positionals';
+lives_ok {
+    ValueHolder->new(value => 22)->value;
+} 'value() should not die';
 
-    lives_ok {
-        ValueHolder->new(value => 22)->value;
-    } 'value() should not die';
-
-    lives_and {
-        is(ValueHolder->new->method1, 1, 'method1() should only get 1 element in @_');
-    } 'nor should method1()';
-}
+lives_and {
+    is(ValueHolder->new->method1, 1, 'method1() should only get 1 element in @_');
+} 'nor should method1()';

@@ -7,8 +7,9 @@ use Devel::Declare ();
 use Moose::Meta::Class;
 use B::Hooks::EndOfScope;
 use MooseX::Method::Signatures;
+use Moose::Util qw/find_meta/;;
 
-our $VERSION = '0.04';
+our $VERSION = '0.07';
 
 our ($Declarator, $Offset, %Outer_Stack, @Roles);
 
@@ -17,6 +18,9 @@ sub import {
     $type ||= '';
 
     my $caller = caller();
+
+    strict->import;
+    warnings->import;
 
     my @blocks       = qw/class role/;
     my @modifiers    = qw/before after around override augment/;
@@ -202,12 +206,19 @@ sub modifier_parser {
     $proto = '$orig: $self' . (length $proto ? ", ${proto}" : '')
         if $Declarator eq 'around';
 
-    inject_if_block( scope_injector_call('};'), "{ method (${proto})" );
+    my $method = MooseX::Method::Signatures::Meta::Method->wrap(
+        signature    => qq{(${proto})},
+        package_name => Devel::Declare::get_curstash_name,
+        name         => $name,
+    );
 
-    my $meth = Moose->can($Declarator);
+    inject_if_block( scope_injector_call() . $method->injectable_code );
+
+    my $modifier_name = $Declarator;
     shadow(sub (&) {
         my $class = caller();
-        $meth->($class, $name, shift->()->body);
+        $method->_set_actual_body(shift);
+        Moose::Util::add_method_modifier($class, $modifier_name, [$name => $method->body]);
     });
 }
 
@@ -258,7 +269,7 @@ sub class_parser {
     my $create_class = sub {
         local @Roles = ();
         shift->();
-        Moose->can('with')->($package, @Roles)
+        Moose::Util::apply_all_roles(find_meta($package), @Roles)
             if @Roles;
     };
 
@@ -417,9 +428,23 @@ L<namespace::clean>
 
 Florian Ragwitz E<lt>rafl@debian.orgE<gt>
 
+With contributions from:
+
+=over 4
+
+=item Ash Berlin E<lt>ash@cpan.orgE<gt>
+
+=item Piers Cawley E<lt>pdcawley@bofh.org.ukE<gt>
+
+=item Tomas Doran E<lt>bobtfish@bobtfish.netE<gt>
+
+=item Yanick Champoux E<lt>yanick@babyl.dyndns.orgE<gt>
+
+=back
+
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2008  Florian Ragwitz
+Copyright (c) 2008, 2009  Florian Ragwitz
 
 Licensed under the same terms as perl itself.
 
