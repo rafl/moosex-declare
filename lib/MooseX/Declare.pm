@@ -428,12 +428,12 @@ What actually happens is something like this:
         use Moose;
         use namespace::clean -except => 'meta';
         ...
-        __PACKAGE__->meta->mate_immutable();
+        __PACKAGE__->meta->make_immutable();
         1;
     }
 
 So if you declare imports outside the class, the symbols get imported into the
-C<main::> namespace, not the classes namespace. The then cannot be called from
+C<main::> namespace, not the class' namespace. The symbols then cannot be called from
 within the class:
 
     use MooseX::Declare;
