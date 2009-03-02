@@ -3,9 +3,11 @@ use Test::More tests => 4;
 use Test::Exception;
 
 class Foo {
-    using Carp qw/croak/;
-    using MooseX::Types::Moose qw/Str/;
-    using MooseX::Types::Structured qw/Tuple/;
+    use Carp qw/croak/;
+    use MooseX::Types::Moose qw/Str/;
+    use MooseX::Types::Structured qw/Tuple/;
+
+    clean;
 
     method fail ($class:) { croak 'korv' }
     method Tuple ($class:) { return Tuple[Str, Str] }
