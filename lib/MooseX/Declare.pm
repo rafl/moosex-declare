@@ -414,6 +414,48 @@ in L<MooseX::Method::Signatures|MooseX::Method::Signatures>.
 For the C<around> modifier an additional argument called C<$orig> is
 automatically set up as the invocant for the method.
 
+=head1 CAVEATS
+
+When creating a class with MooseX::Declare like:
+
+    use MooseX::Declare;
+    class Foo { ... }
+
+What actually happens is something like this:
+
+    {
+        package Foo;
+        use Moose;
+        use namespace::clean -except => 'meta';
+        ...
+        __PACKAGE__->meta->mate_immutable();
+        1;
+    }
+
+So if you declare imports outside the class, the symbols get imported into the
+C<main::> namespace, not the classes namespace. The then cannot be called from
+within the class:
+
+    use MooseX::Declare;
+    use MooseX::ClassAttributes;
+    class Foo {
+        class_has bar => ( ... ); # class_has is not in Foo!
+        ...
+    }
+
+Furthermore, any imports will not be cleaned up by L<namespace::clean> after
+compilation since the class knows nothing about them! The temptation to do this
+may stem from wanting to keep all your import declarations in the same place.
+
+A solution is in the works which would allow you call your imports like this:
+
+    use MooseX::Declare;
+    class Foo {
+        using MooseX::ClassAttributes;
+        class_has bar => ( ... ); # class_has IS in Foo =)
+        ...
+    }
+
 =head1 SEE ALSO
 
 L<Moose>
