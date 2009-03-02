@@ -1,9 +1,0 @@
-* Implement class Foo;
-* Only set up the matching declarators inside of class and role.
-  (i.e. no augment in role)
-* Implemet subclass { ... }, meaning class Foo extends OuterClass { ... } for
-  nested classes.
-* Allow $class = extends Foo { ... }; and $class = with Role { ... }; for
-  creating anonymous classes. Not only $class = class extends Foo { .. };
-  doesn't read very well, it's also hard to distinguish from creating a class
-  called 'extends'
