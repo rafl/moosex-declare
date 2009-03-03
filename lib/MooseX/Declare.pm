@@ -9,7 +9,7 @@ use B::Hooks::EndOfScope;
 use MooseX::Method::Signatures;
 use Moose::Util qw/find_meta/;;
 
-our $VERSION = '0.07';
+our $VERSION = '0.09';
 
 our ($Declarator, $Offset, %Outer_Stack, @Roles);
 
@@ -38,6 +38,10 @@ sub import {
 
         push @exported, @modifiers;
 
+        Devel::Declare->setup_for($caller => {
+            clean => { const => \&clean_parser },
+        });
+
         if (exists $args{file}) {
             $Outer_Stack{ $args{file} } ||= [];
             push @{ $Outer_Stack{ $args{file} } }, $args{outer_package};
@@ -49,8 +53,10 @@ sub import {
         *{ "${caller}::${_}" } = sub (&) { }
             for @exported;
 
-        *{ "${caller}::with" } = sub { push @Roles, @_; }
-            if $type eq 'inner';
+        if ($type eq 'inner') {
+            *{ "${caller}::with"  } = sub { push @Roles, @_; };
+            *{ "${caller}::clean" } = sub {};
+        }
     }
 
     MooseX::Method::Signatures->setup_for($caller)
@@ -220,6 +226,16 @@ sub modifier_parser {
         $method->_set_actual_body(shift);
         Moose::Util::add_method_modifier($class, $modifier_name, [$name => $method->body]);
     });
+}
+
+sub clean_parser {
+    local ($Declarator, $Offset) = @_;
+
+    skip_declarator;
+
+    my $linestr = Devel::Declare::get_linestr();
+    substr($linestr, $Offset, 0) = q{;use namespace::clean -except => 'meta'};
+    Devel::Declare::set_linestr($linestr);
 }
 
 sub class_parser {
@@ -414,6 +430,57 @@ in L<MooseX::Method::Signatures|MooseX::Method::Signatures>.
 For the C<around> modifier an additional argument called C<$orig> is
 automatically set up as the invocant for the method.
 
+=head2 clean
+
+When creating a class with MooseX::Declare like:
+
+    use MooseX::Declare;
+    class Foo { ... }
+
+What actually happens is something like this:
+
+    {
+        package Foo;
+        use Moose;
+        use namespace::clean -except => 'meta';
+        ...
+        __PACKAGE__->meta->mate_immutable();
+        1;
+    }
+
+So if you declare imports outside the class, the symbols get imported into the
+C<main::> namespace, not the class' namespace. The symbols then cannot be called
+from within the class:
+
+    use MooseX::Declare;
+    use Data::Dump qw/dump/;
+    class Foo {
+        method dump($value) { return dump($value) } # Data::Dump::dump IS NOT in Foo::
+        method pp($value)   { $self->dump($value) } # an alias for our dump method
+    }
+
+Furthermore, any imports will not be cleaned up by L<namespace::clean> after
+compilation since the class knows nothing about them! The temptation to do this
+may stem from wanting to keep all your import declarations in the same place.
+
+The solution is two-fold. First, only import MooseX::Declare outside the class
+definition (because you have to). Make all other imports inside the class definition
+and clean up with the C<clean> keyword:
+
+    use MooseX::Declare;
+    class Foo {
+        use Data::Dump qw/dump/;
+        clean;
+        method dump($value) { return dump($value) } # Data::Dump::dump IS in Foo::
+        method pp($value)   { $self->dump($value) } # an alias for our dump method
+    }
+
+    Foo->new->dump($some_value);
+    Foo->new->pp($some_value);
+
+B<NOTE> that the import C<Data::Dump::dump()> and the method C<Foo::dump()>,
+although having the same name, do not conflict with each other.
+
 =head1 SEE ALSO
 
 L<Moose>
@@ -433,6 +500,10 @@ With contributions from:
 =over 4
 
 =item Ash Berlin E<lt>ash@cpan.orgE<gt>
+
+=item Hans Dieter Pearcey E<lt>hdp@cpan.orgE<gt>
+
+=item Nelo Onyiah E<lt>nelo.onyiah@gmail.comE<gt>
 
 =item Piers Cawley E<lt>pdcawley@bofh.org.ukE<gt>
 
