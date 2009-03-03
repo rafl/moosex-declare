@@ -1,3 +1,8 @@
+0.09  Tue, 03 Mar 2009 17:43:13 +0100
+  * Improve clean documentation:
+    + Actually use the clean keyword in the example (Hans Dieter Pearcey).
+    + Substitute MyDumper with Foo for consistency (Nelo Onyiah).
+
 0.08  Tue, 03 Mar 2009 02:55:46 +0100
   * Implement the clean keyword.
     + Document the clean keyword (Nelo Onyiah).
