@@ -38,6 +38,10 @@ sub import {
 
         push @exported, @modifiers;
 
+        Devel::Declare->setup_for($caller => {
+            clean => { const => \&clean_parser },
+        });
+
         if (exists $args{file}) {
             $Outer_Stack{ $args{file} } ||= [];
             push @{ $Outer_Stack{ $args{file} } }, $args{outer_package};
@@ -49,8 +53,10 @@ sub import {
         *{ "${caller}::${_}" } = sub (&) { }
             for @exported;
 
-        *{ "${caller}::with" } = sub { push @Roles, @_; }
-            if $type eq 'inner';
+        if ($type eq 'inner') {
+            *{ "${caller}::with"  } = sub { push @Roles, @_; };
+            *{ "${caller}::clean" } = sub {};
+        }
     }
 
     MooseX::Method::Signatures->setup_for($caller)
@@ -220,6 +226,16 @@ sub modifier_parser {
         $method->_set_actual_body(shift);
         Moose::Util::add_method_modifier($class, $modifier_name, [$name => $method->body]);
     });
+}
+
+sub clean_parser {
+    local ($Declarator, $Offset) = @_;
+
+    skip_declarator;
+
+    my $linestr = Devel::Declare::get_linestr();
+    substr($linestr, $Offset, 0) = q{;use namespace::clean -except => 'meta'};
+    Devel::Declare::set_linestr($linestr);
 }
 
 sub class_parser {
