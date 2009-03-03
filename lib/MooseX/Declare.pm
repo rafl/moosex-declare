@@ -454,8 +454,8 @@ from within the class:
 
     use MooseX::Declare;
     use Data::Dump qw/dump/;
-    class MyDumper {
-        method dump($value) { return dump($value) } # Data::Dump::dump IS NOT in MyDumper::
+    class Foo {
+        method dump($value) { return dump($value) } # Data::Dump::dump IS NOT in Foo::
         method pp($value)   { $self->dump($value) } # an alias for our dump method
     }
 
@@ -468,16 +468,16 @@ definition (because you have to). Make all other imports inside the class defini
 and clean up with the C<clean> keyword:
 
     use MooseX::Declare;
-    class MyDumper {
+    class Foo {
         use Data::Dump qw/dump/;
-        method dump($value) { return dump($value) } # Data::Dump::dump IS in MyDumper::
+        method dump($value) { return dump($value) } # Data::Dump::dump IS in Foo::
         method pp($value)   { $self->dump($value) } # an alias for our dump method
     }
 
-    MyDumper->new->dump($some_value);
-    MyDumper->new->pp($some_value);
+    Foo->new->dump($some_value);
+    Foo->new->pp($some_value);
 
-B<NOTE> that the import C<Data::Dump::dump()> and the method C<MyDumper::dump()>,
+B<NOTE> that the import C<Data::Dump::dump()> and the method C<Foo::dump()>,
 although having the same name, do not conflict with each other.
 
 =head1 SEE ALSO
