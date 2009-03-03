@@ -9,7 +9,7 @@ use B::Hooks::EndOfScope;
 use MooseX::Method::Signatures;
 use Moose::Util qw/find_meta/;;
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 our ($Declarator, $Offset, %Outer_Stack, @Roles);
 

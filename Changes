@@ -1,3 +1,7 @@
+0.08  Tue, 03 Mar 2009 02:55:46 +0100
+  * Implement the clean keyword.
+    + Document the clean keyword (Nelo Onyiah).
+
 0.07  Sat, 28 Feb 2009 21:01:32 +0100
   * Mention all contributors.
   * Use MooseX::Method::Signatures::Meta::Method instead of injecting
