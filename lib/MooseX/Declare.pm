@@ -430,6 +430,56 @@ in L<MooseX::Method::Signatures|MooseX::Method::Signatures>.
 For the C<around> modifier an additional argument called C<$orig> is
 automatically set up as the invocant for the method.
 
+=head2 clean
+
+When creating a class with MooseX::Declare like:
+
+    use MooseX::Declare;
+    class Foo { ... }
+
+What actually happens is something like this:
+
+    {
+        package Foo;
+        use Moose;
+        use namespace::clean -except => 'meta';
+        ...
+        __PACKAGE__->meta->mate_immutable();
+        1;
+    }
+
+So if you declare imports outside the class, the symbols get imported into the
+C<main::> namespace, not the class' namespace. The symbols then cannot be called
+from within the class:
+
+    use MooseX::Declare;
+    use Data::Dump qw/dump/;
+    class MyDumper {
+        method dump($value) { return dump($value) } # Data::Dump::dump IS NOT in MyDumper::
+        method pp($value)   { $self->dump($value) } # an alias for our dump method
+    }
+
+Furthermore, any imports will not be cleaned up by L<namespace::clean> after
+compilation since the class knows nothing about them! The temptation to do this
+may stem from wanting to keep all your import declarations in the same place.
+
+The solution is two-fold. First, only import MooseX::Declare outside the class
+definition (because you have to). Make all other imports inside the class definition
+and clean up with the C<clean> keyword:
+
+    use MooseX::Declare;
+    class MyDumper {
+        use Data::Dump qw/dump/;
+        method dump($value) { return dump($value) } # Data::Dump::dump IS in MyDumper::
+        method pp($value)   { $self->dump($value) } # an alias for our dump method
+    }
+
+    MyDumper->new->dump($some_value);
+    MyDumper->new->pp($some_value);
+
+B<NOTE> that the import C<Data::Dump::dump()> and the method C<MyDumper::dump()>,
+although having the same name, do not conflict with each other.
+
 =head1 SEE ALSO
 
 L<Moose>
