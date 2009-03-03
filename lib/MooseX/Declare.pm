@@ -470,6 +470,7 @@ and clean up with the C<clean> keyword:
     use MooseX::Declare;
     class Foo {
         use Data::Dump qw/dump/;
+        clean;
         method dump($value) { return dump($value) } # Data::Dump::dump IS in Foo::
         method pp($value)   { $self->dump($value) } # an alias for our dump method
     }
