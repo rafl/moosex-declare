@@ -500,6 +500,8 @@ With contributions from:
 
 =item Ash Berlin E<lt>ash@cpan.orgE<gt>
 
+=item Nelo Onyiah E<lt>nelo.onyiah@gmail.comE<gt>
+
 =item Piers Cawley E<lt>pdcawley@bofh.org.ukE<gt>
 
 =item Tomas Doran E<lt>bobtfish@bobtfish.netE<gt>
