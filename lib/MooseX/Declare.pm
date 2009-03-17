@@ -4,6 +4,7 @@ use warnings;
 package MooseX::Declare;
 
 use Devel::Declare ();
+use MooseX::Declare::Context;
 use Moose::Meta::Class;
 use B::Hooks::EndOfScope;
 use MooseX::Method::Signatures;
@@ -11,7 +12,7 @@ use Moose::Util qw/find_meta/;;
 
 our $VERSION = '0.09';
 
-our ($Declarator, $Offset, %Outer_Stack, @Roles);
+our (%Outer_Stack, @Roles);
 
 sub import {
     my ($class, $type, %args) = @_;
@@ -62,136 +63,19 @@ sub import {
     MooseX::Method::Signatures->setup_for($caller)
 }
 
-sub skip_declarator {
-    $Offset += Devel::Declare::toke_move_past_token($Offset);
-}
-
-sub skipspace {
-    $Offset += Devel::Declare::toke_skipspace($Offset);
-}
-
-sub strip_name {
-    skipspace;
-
-    if (my $len = Devel::Declare::toke_scan_word($Offset, 1)) {
-        my $linestr = Devel::Declare::get_linestr();
-        my $name    = substr($linestr, $Offset, $len);
-        substr($linestr, $Offset, $len) = '';
-        Devel::Declare::set_linestr($linestr);
-        return $name;
-    }
-
-    skipspace;
-
-    return;
-}
-
-sub strip_options {
-    skipspace;
-
-    my %ret;
-    my $linestr = Devel::Declare::get_linestr();
-
-    while (substr($linestr, $Offset, 1) ne '{') {
-        my $len = Devel::Declare::toke_scan_word($Offset, 0);
-        if (!$len) {
-            die 'expected option name';
-        }
-
-        $linestr = Devel::Declare::get_linestr();
-        my $key = substr($linestr, $Offset, $len);
-        substr($linestr, $Offset, $len) = '';
-
-        if ($key !~ /^(extends|with|is)$/) {
-            die "unknown option name '${key}'";
-        }
-
-        Devel::Declare::set_linestr($linestr);
-
-        skipspace;
-
-        $len = Devel::Declare::toke_scan_word($Offset, 1);
-        if (!$len) {
-            die 'expected option value';
-        }
-
-        $linestr = Devel::Declare::get_linestr();
-        my $val = substr($linestr, $Offset, $len);
-        substr($linestr, $Offset, $len) = '';
-
-        $ret{$key} ||= [];
-        push @{ $ret{$key} }, $val;
-
-        Devel::Declare::set_linestr($linestr);
-
-        skipspace;
-        $linestr = Devel::Declare::get_linestr();
-    }
-
-    return { map {
-        my $key = $_;
-        $key eq 'is'
-            ? ($key => { map { ($_ => 1) } @{ $ret{$key} } })
-            : ($key => $ret{$key})
-    } keys %ret };
-}
-
-sub strip_proto {
-    skipspace;
-
-    my $linestr = Devel::Declare::get_linestr();
-    if (substr($linestr, $Offset, 1) eq '(') {
-        my $length = Devel::Declare::toke_scan_str($Offset);
-        my $proto  = Devel::Declare::get_lex_stuff();
-        Devel::Declare::clear_lex_stuff();
-        $linestr = Devel::Declare::get_linestr();
-        substr($linestr, $Offset, $length) = '';
-        Devel::Declare::set_linestr($linestr);
-        return $proto;
-    }
-
-    return;
-}
-
-sub inject_if_block {
-    my $inject = shift;
-    my $inject_before = shift || '';
-
-    skipspace;
-
-    my $linestr = Devel::Declare::get_linestr;
-    if (substr($linestr, $Offset, 1) eq '{') {
-        substr($linestr, $Offset+1, 0) = $inject;
-        substr($linestr, $Offset, 0) = $inject_before;
-        Devel::Declare::set_linestr($linestr);
-    }
-}
-
-sub scope_injector_call {
-    my ($inject) = @_;
-    $inject ||= '';
-
-    return "BEGIN { MooseX::Declare::inject_scope('${inject}') }; ";
-}
-
-sub shadow {
-    my $pack = Devel::Declare::get_curstash_name;
-    Devel::Declare::shadow_sub("${pack}::${Declarator}", $_[0]);
-}
-
 sub options_unwrap {
     my ($options) = @_;
     my $ret = '';
 
     if (my $superclasses = $options->{extends}) {
         $ret .= 'extends ';
-        $ret .= join q{,}, map { qq{'${_}'} } @{ $superclasses };
+        $ret .= join q{,}, map { "'$_'" } @{ $superclasses };
         $ret .= ';';
     }
 
     if (my $roles = $options->{with}) {
         $ret .= 'with ';
-        $ret .= join q{,}, map { qq{'${_}'} } @{ $roles };
+        $ret .= join q{,}, map { "'$_'" } @{ $roles };
         $ret .= ';';
     }
 
@@ -199,29 +83,29 @@ sub options_unwrap {
 }
 
 sub modifier_parser {
-    local ($Declarator, $Offset) = @_;
+    my $ctx = MooseX::Declare::Context->new->init(@_);
 
-    skip_declarator;
+    $ctx->skip_declarator;
 
-    my $name = strip_name;
+    my $name = $ctx->strip_name;
     die 'method name expected'
         unless defined $name;
 
-    my $proto = strip_proto || '';
+    my $proto = $ctx->strip_proto || '';
 
     $proto = '$orig: $self' . (length $proto ? ", ${proto}" : '')
-        if $Declarator eq 'around';
+        if $ctx->declarator eq 'around';
 
     my $method = MooseX::Method::Signatures::Meta::Method->wrap(
         signature    => qq{(${proto})},
-        package_name => Devel::Declare::get_curstash_name,
+        package_name => $ctx->get_curstash_name,
         name         => $name,
     );
 
-    inject_if_block( scope_injector_call() . $method->injectable_code );
+    $ctx->inject_if_block( $ctx->scope_injector_call() . $method->injectable_code );
 
-    my $modifier_name = $Declarator;
-    shadow(sub (&) {
+    my $modifier_name = $ctx->declarator;
+    $ctx->shadow(sub (&) {
         my $class = caller();
         $method->_set_actual_body(shift);
         Moose::Util::add_method_modifier($class, $modifier_name, [$name => $method->body]);
@@ -229,22 +113,22 @@ sub modifier_parser {
 }
 
 sub clean_parser {
-    local ($Declarator, $Offset) = @_;
+    my $ctx = MooseX::Declare::Context->new->init(@_);
 
-    skip_declarator;
+    $ctx->skip_declarator;
 
-    my $linestr = Devel::Declare::get_linestr();
-    substr($linestr, $Offset, 0) = q{;use namespace::clean -except => 'meta'};
-    Devel::Declare::set_linestr($linestr);
+    my $linestr = $ctx->get_linestr();
+    substr($linestr, $ctx->offset, 0) = q{;use namespace::clean -except => 'meta'};
+    $ctx->set_linestr($linestr);
 }
 
 sub class_parser {
-    local ($Declarator, $Offset) = @_;
+    my $ctx = MooseX::Declare::Context->new->init(@_);
 
-    skip_declarator;
+    $ctx->skip_declarator;
 
-    my $name    = strip_name;
-    my $options = strip_options;
+    my $name    = $ctx->strip_name;
+    my $options = $ctx->strip_options;
 
     my ($package, $anon);
 
@@ -261,12 +145,12 @@ sub class_parser {
     my $inject = qq/package ${package}; use MooseX::Declare 'inner', outer_package => '${package}', file => __FILE__; /;
     my $inject_after = '';
 
-    if ($Declarator eq 'class') {
+    if ($ctx->declarator eq 'class') {
         $inject       .= q/use Moose qw{extends has inner super confess blessed};/;
         $inject_after .= "${package}->meta->make_immutable;"
             unless exists $options->{is}->{mutable};
     }
-    elsif ($Declarator eq 'role') {
+    elsif ($ctx->declarator eq 'role') {
         $inject .= q/use Moose::Role qw{requires excludes has extends super inner confess blessed};/;
     }
     else { die }
@@ -277,10 +161,10 @@ sub class_parser {
     $inject_after .= 'BEGIN { my $file = __FILE__; my $outer = $MooseX::Declare::Outer_Stack{$file}; pop @{ $outer } if $outer && @{ $outer } }';
 
     if (defined $name) {
-        $inject .= scope_injector_call($inject_after);
+        $inject .= $ctx->scope_injector_call($inject_after);
     }
 
-    inject_if_block($inject);
+    $ctx->inject_if_block($inject);
 
     my $create_class = sub {
         local @Roles = ();
@@ -290,23 +174,11 @@ sub class_parser {
     };
 
     if (defined $name) {
-        shadow(sub (&) { $create_class->(@_); return $name; });
+        $ctx->shadow(sub (&) { $create_class->(@_); return $name; });
     }
     else {
-        shadow(sub (&) { $create_class->(@_); return $anon; });
+        $ctx->shadow(sub (&) { $create_class->(@_); return $anon; });
     }
-}
-
-sub inject_scope {
-    my ($inject) = @_;
-
-    on_scope_end {
-        my $linestr = Devel::Declare::get_linestr();
-        return unless defined $linestr;
-        my $offset  = Devel::Declare::get_linestr_offset();
-        substr($linestr, $offset, 0) = ';' . $inject;
-        Devel::Declare::set_linestr($linestr);
-    };
 }
 
 1;
