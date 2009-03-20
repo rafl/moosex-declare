@@ -51,7 +51,7 @@ sub import {
 
     {
         no strict 'refs';
-        *{ "${caller}::${_}" } = sub (&) { }
+        *{ "${caller}::${_}" } = sub { }
             for @exported;
 
         if ($type eq 'inner') {
