@@ -1,9 +1,11 @@
 use strict;
 use warnings;
-use Test::More tests => 5;
+use Test::More tests => 10;
 use Test::Moose;
 
 use MooseX::Declare;
+
+role Rollo { }
 
 my $meta_class = class {
     has 'foo' => (
@@ -20,3 +22,16 @@ can_ok($class, 'new');
 has_attribute_ok($class, 'foo');
 
 ok(!__PACKAGE__->can('augment'));
+
+my $meta_class_2 = class with Rollo;
+
+isa_ok($meta_class_2, 'Moose::Meta::Class');
+
+$class = $meta_class_2->name;
+meta_ok($class);
+can_ok($class, 'new');
+does_ok($class, 'Rollo');
+
+my $meta_class_3 = class();
+
+isa_ok($meta_class_3, 'Moose::Meta::Class', 'class() works');

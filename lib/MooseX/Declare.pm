@@ -3,12 +3,13 @@ use warnings;
 
 package MooseX::Declare;
 
+use Carp qw/croak/;
 use Devel::Declare ();
 use MooseX::Declare::Context;
 use Moose::Meta::Class;
 use B::Hooks::EndOfScope;
 use MooseX::Method::Signatures;
-use Moose::Util qw/find_meta/;;
+use Moose::Util qw/find_meta/;
 
 our $VERSION = '0.09';
 
@@ -51,16 +52,24 @@ sub import {
 
     {
         no strict 'refs';
-        *{ "${caller}::${_}" } = sub { }
+        *{ "${caller}::${_}" } = __PACKAGE__->can($_) || sub { }
             for @exported;
 
         if ($type eq 'inner') {
             *{ "${caller}::with"  } = sub { push @Roles, @_; };
-            *{ "${caller}::clean" } = sub {};
+            *{ "${caller}::clean"  } = sub { };
         }
     }
 
     MooseX::Method::Signatures->setup_for($caller)
+}
+
+# The non-parsed version. 'my $meta = class()';
+sub class {
+    Moose::Meta::Class->create_anon_class;
+}
+sub role {
+    Moose::Meta::Role->create_anon_role;
 }
 
 sub options_unwrap {
@@ -86,10 +95,10 @@ sub modifier_parser {
     my $ctx = MooseX::Declare::Context->new->init(@_);
 
     $ctx->skip_declarator;
+    local $Carp::Internal{'Devel::Declare'} = 1;
 
     my $name = $ctx->strip_name;
-    die 'method name expected'
-        unless defined $name;
+    return unless defined $name;
 
     my $proto = $ctx->strip_proto || '';
 
@@ -127,8 +136,7 @@ sub class_parser {
 
     $ctx->skip_declarator;
 
-    my $name    = $ctx->strip_name;
-    my $options = $ctx->strip_options;
+    my ($name, $options) = $ctx->strip_name_and_options;
 
     my ($package, $anon);
 
@@ -136,6 +144,10 @@ sub class_parser {
         $package = $name;
         my $outer_stack = $Outer_Stack{ (caller(1))[1] };
         $package = join('::', $outer_stack->[-1], $package) if $outer_stack && @{ $outer_stack };
+    }
+    elsif (keys %$options == 0 && substr($ctx->get_linestr, $ctx->offset, 1) ne '{') {
+        # No name, no options, no block. Probably { class => 'foo' }
+        return;
     }
     else {
         $anon = Moose::Meta::Class->create_anon_class;
@@ -164,7 +176,15 @@ sub class_parser {
         $inject .= $ctx->scope_injector_call($inject_after);
     }
 
-    $ctx->inject_if_block($inject);
+    unless ($ctx->inject_if_block($inject)) {
+      # No block, so probably "class Foo;" type thing.
+      my $linestr = $ctx->get_linestr;
+      croak "block or semi-colon expected after " . $ctx->declarator . " statement"
+        unless substr($linestr, $ctx->offset, 1) eq ';';
+
+      substr($linestr, $ctx->offset, 0, "{ $inject }");
+      $ctx->set_linestr($linestr);
+    }
 
     my $create_class = sub {
         local @Roles = ();
