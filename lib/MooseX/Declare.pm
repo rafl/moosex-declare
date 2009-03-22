@@ -235,9 +235,12 @@ for Perl 5. When used, it sets up the C<class> and C<role> keywords.
 
 Declares a new class. The class can be either named or anonymous, depending on
 whether or not a classname is given. Within the class definition Moose and
-MooseX::Method::Signatures are set up automatically in addition to the other
+L<MooseX::Method::Signatures> are set up automatically in addition to the other
 keywords described in this document. At the end of the definition the class
 will be made immutable. namespace::clean is injected to clean up Moose for you.
+
+Because of the way the options are parsed, you cannot have a class named "is",
+"with" or "extends".
 
 It's possible to specify options for classes:
 
@@ -260,6 +263,10 @@ Applies a role to the class being declared.
     class Foo is mutable { ... }
 
 Causes the class not to be made immutable after its definition.
+
+Options can also be provided for anonymous classes using the same syntax:
+
+    my $meta_class = class with Role;
 
 =back
 
