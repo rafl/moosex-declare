@@ -11,7 +11,7 @@ use B::Hooks::EndOfScope;
 use MooseX::Method::Signatures;
 use Moose::Util qw/find_meta/;
 
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 our (%Outer_Stack, @Roles);
 
