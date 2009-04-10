@@ -52,4 +52,10 @@ class Quux extends Corge {
     method quux {}
 }
 
+role SecondRole {}
+
+class MultiRole with Role with SecondRole {
+    method required_thing {}
+}
+
 1;
