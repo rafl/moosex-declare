@@ -176,7 +176,6 @@ sub strip_name_and_options {
     while (substr($linestr, $self->offset, 1) !~ /[{;]/) {
         my $key = $self->strip_name;
         if (!defined $key) {
-
             croak 'expected option name'
               if keys %ret;
             return; # This is the case when { class => 'foo' } happens
@@ -194,11 +193,16 @@ sub strip_name_and_options {
 
         my $val = $self->strip_name;
         if (!defined $val) {
-            croak "expected option value after $key";
+            if (defined($val = $self->strip_proto)) {
+                $val = [split /\s*,\s*/, $val];
+            }
+            else {
+                croak "expected option value after $key";
+            }
         }
 
         $ret{$key} ||= [];
-        push @{ $ret{$key} }, $val;
+        push @{ $ret{$key} }, ref $val ? @{ $val } : $val;
         $self->skipspace;
         $linestr = $self->get_linestr();
     }
