@@ -181,10 +181,13 @@ sub strip_word {
     my $linestr = $self->get_linestr;
     return if substr($linestr, $self->offset, 1) =~ /[{;]/;
 
+    # TODO:
+    # - provide a reserved_words attribute
+    # - allow keywords to consume reserved_words autodiscovery role
     my $word = $self->peek_next_word;
     return if !defined $word || $word =~ /^(?:extends|with|is)$/;
 
-    return $self->strip_name;
+    return scalar $self->strip_name;
 }
 
 sub strip_options {
