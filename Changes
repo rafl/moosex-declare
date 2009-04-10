@@ -1,3 +1,28 @@
+0.10  Wed, 08 Apr 2009 04:09:56 +0200
+  * Depend on D::D 0.003005 for the inject_if_block return value.
+  * Docs now mention namespace::clean (Ash Berlin).
+  * Refactor - aka throw code away - by potring to
+    D::D::Context::Simple (Ash Berlin).
+  * Remove prototype from exported subs (Ash Berlin).
+  * Make keywords less reversed (i.e. as hash keys) and make class()
+    return an anon-metaclass (Ash Berlin).
+  * Update pod mentioning restrictions on class names (Ash Berlin).
+
+0.09  Tue, 03 Mar 2009 17:43:13 +0100
+  * Improve clean documentation:
+    + Actually use the clean keyword in the example (Hans Dieter Pearcey).
+    + Substitute MyDumper with Foo for consistency (Nelo Onyiah).
+
+0.08  Tue, 03 Mar 2009 02:55:46 +0100
+  * Implement the clean keyword.
+    + Document the clean keyword (Nelo Onyiah).
+
+0.07  Sat, 28 Feb 2009 21:01:32 +0100
+  * Mention all contributors.
+  * Use MooseX::Method::Signatures::Meta::Method instead of injecting
+    method keywords.
+  * Update copyright notice for the new year (Yanick Champoux).
+
 0.06  Tue, 24 Feb 2009 07:20:03 +0100
   * Automatically import strict and warnings.
   * Don't use the Moose sugar sugar methods for installing modifiers.
