@@ -3,6 +3,8 @@ package MooseX::Declare::Syntax::NamespaceHandling;
 use Moose::Role;
 use MooseX::Declare::Util qw( outer_stack_peek );
 
+use aliased 'MooseX::Declare::Context::Namespaced';
+
 use namespace::clean -except => 'meta';
 
 with qw(
@@ -19,6 +21,25 @@ sub add_optional_customizations  { }
 sub handle_post_parsing          { }
 sub make_anon_metaclass          { }
 
+around context_traits => sub { super, Namespaced };
+
+sub parse_specification {
+    my ($self, $ctx) = @_;
+
+    $self->parse_namespace_specification($ctx);
+    return $self->parse_option_specification($ctx);
+}
+
+sub parse_namespace_specification {
+    my ($self, $ctx) = @_;
+    return scalar $ctx->strip_namespace;
+}
+
+sub parse_option_specification {
+    my ($self, $ctx) = @_;
+    return scalar $ctx->strip_options;
+}
+
 sub parse {
     my ($self, $ctx) = @_;
 
@@ -26,7 +47,9 @@ sub parse {
     $ctx->skip_declarator;
 
     # read the name and unwrap the options
-    my ($name, $options) = $ctx->strip_name_and_options;
+    my $options = $self->parse_specification($ctx);
+    my $name    = $ctx->namespace;
+
     my ($package, $anon);
 
     # we have a name in the declaration, which will be used as package name

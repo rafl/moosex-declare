@@ -4,6 +4,7 @@ use Moose::Role;
 use Moose::Util::TypeConstraints;
 use Devel::Declare ();
 use Sub::Install qw( install_sub );
+use Moose::Meta::Class ();
 use aliased 'MooseX::Declare::Context';
 
 use namespace::clean -except => 'meta';
@@ -19,6 +20,10 @@ has identifier => (
 );
 
 sub get_identifier { shift->identifier }
+
+sub context_class { Context }
+
+sub context_traits { }
 
 sub setup_for {
     my ($self, $setup_class, %args) = @_;
@@ -50,8 +55,29 @@ sub setup_for {
 sub parse_declaration {
     my ($self, $caller_file, $args, @ctx_args) = @_;
 
+    # find and load context object class
+    my $ctx_class = $self->context_class;
+    Class::MOP::load_class $ctx_class;
+
+    # do we have traits?
+    if (my @ctx_traits = $self->context_traits) {
+
+        Class::MOP::load_class $_
+            for @ctx_traits;
+
+        $ctx_class = Moose::Meta::Class->create_anon_class(
+            superclasses => [$ctx_class],
+            roles        => [@ctx_traits],
+            cache        => 1,
+        )->name;
+    }
+
     # create a context object and initialize it
-    (my $ctx = Context->new(%{ $args }, caller_file => $caller_file))->init(@ctx_args);
+    my $ctx = $ctx_class->new(
+        %{ $args },
+        caller_file => $caller_file,
+    );
+    $ctx->init(@ctx_args);
 
     # parse with current context
     return $self->parse($ctx);
