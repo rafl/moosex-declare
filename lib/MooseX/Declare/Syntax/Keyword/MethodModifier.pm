@@ -1,7 +1,6 @@
 package MooseX::Declare::Syntax::Keyword::MethodModifier;
 
 use Moose;
-
 use MooseX::Method::Signatures::Meta::Method;
 
 use namespace::clean -except => 'meta';

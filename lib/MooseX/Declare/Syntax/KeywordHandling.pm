@@ -1,11 +1,9 @@
 package MooseX::Declare::Syntax::KeywordHandling;
 
 use Moose::Role;
-
 use Moose::Util::TypeConstraints;
 use Devel::Declare ();
 use Sub::Install qw( install_sub );
-
 use aliased 'MooseX::Declare::Context';
 
 use namespace::clean -except => 'meta';
