@@ -1,6 +1,6 @@
 use MooseX::Declare;
 
-role Counter (Str $name) {
+role Counter (Str :$name) {
     has $name => (is => 'rw', isa => 'Int', default => 0);
 
     method "increment_${name}" {
