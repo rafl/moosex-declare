@@ -27,12 +27,13 @@ around default_inner => sub {
     return [
         MethodModifier->new(
             identifier          => 'around',
+            modifier_type       => 'around',
             prototype_beginning => '$orig: $self',
         ),
         CleanKeyword->new(
             identifier          => 'clean',
         ),
-        map { MethodModifier->new(identifier => $_) }
+        map { MethodModifier->new(identifier => $_, modifier_type => $_) }
             qw( after before override augment ),
     ];
 };
