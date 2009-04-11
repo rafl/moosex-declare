@@ -21,7 +21,7 @@ sub add_optional_customizations  { }
 sub handle_post_parsing          { }
 sub make_anon_metaclass          { }
 
-around context_traits => sub { super, Namespaced };
+around context_traits => sub { shift->(@_), Namespaced };
 
 sub parse_specification {
     my ($self, $ctx) = @_;
