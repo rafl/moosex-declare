@@ -59,23 +59,13 @@ sub parse_declaration {
     my $ctx_class = $self->context_class;
     Class::MOP::load_class $ctx_class;
 
-    # do we have traits?
-    if (my @ctx_traits = $self->context_traits) {
-
-        Class::MOP::load_class $_
-            for @ctx_traits;
-
-        $ctx_class = Moose::Meta::Class->create_anon_class(
-            superclasses => [$ctx_class],
-            roles        => [@ctx_traits],
-            cache        => 1,
-        )->name;
-    }
+    my @traits = $self->context_traits;
 
     # create a context object and initialize it
-    my $ctx = $ctx_class->new(
+    my $ctx = $ctx_class->new_with_traits(
         %{ $args },
         caller_file => $caller_file,
+        (@traits ? (traits => \@traits) : ()),
     );
     $ctx->init(@ctx_args);
 

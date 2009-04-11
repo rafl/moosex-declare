@@ -7,6 +7,8 @@ use aliased 'Devel::Declare::Context::Simple', 'DDContext';
 
 use namespace::clean -except => 'meta';
 
+with qw(MooseX::Traits);
+
 has _dd_context => (
     is          => 'ro',
     isa         => DDContext,
