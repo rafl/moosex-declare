@@ -5,11 +5,12 @@ use inc::Module::Install;
 name 'MooseX-Declare';
 all_from 'lib/MooseX/Declare.pm';
 
-requires 'Devel::Declare' => '0.003000';
+requires 'Devel::Declare' => '0.003005';
 requires 'B::Hooks::EndOfScope';
 requires 'namespace::clean';
 requires 'Moose';
 requires 'MooseX::Method::Signatures' => '0.10';
+requires 'MooseX::Traits';
 
 test_requires 'Test::Exception';
 test_requires 'Test::NoWarnings';

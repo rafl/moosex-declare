@@ -1,3 +1,13 @@
+0.10  Wed, 08 Apr 2009 04:09:56 +0200
+  * Depend on D::D 0.003005 for the inject_if_block return value.
+  * Docs now mention namespace::clean (Ash Berlin).
+  * Refactor - aka throw code away - by potring to
+    D::D::Context::Simple (Ash Berlin).
+  * Remove prototype from exported subs (Ash Berlin).
+  * Make keywords less reversed (i.e. as hash keys) and make class()
+    return an anon-metaclass (Ash Berlin).
+  * Update pod mentioning restrictions on class names (Ash Berlin).
+
 0.09  Tue, 03 Mar 2009 17:43:13 +0100
   * Improve clean documentation:
     + Actually use the clean keyword in the example (Hans Dieter Pearcey).
