@@ -1,4 +1,5 @@
 package MooseX::Declare::Context::Namespaced;
+
 use Moose::Role;
 
 use namespace::clean -except => 'meta';

@@ -12,4 +12,8 @@ role Counter (Str :$name) {
     }
 }
 
+class MyGame::Tile {
+    with Counter => { name => 'stepped_on' };
+}
+
 1;
