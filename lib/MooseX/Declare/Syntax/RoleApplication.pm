@@ -9,7 +9,7 @@ with qw(
 );
 
 sub add_with_option_customizations {
-    my ($self, $ctx, $package, $roles, $options) = @_;
+    my ($self, $ctx, $package, $roles) = @_;
 
     # consume roles
     $ctx->add_scope_code_parts(

@@ -9,7 +9,7 @@ with qw(
 );
 
 sub add_extends_option_customizations {
-    my ($self, $ctx, $package, $superclasses, $options) = @_;
+    my ($self, $ctx, $package, $superclasses) = @_;
 
     # add code for extends keyword
     $ctx->add_scope_code_parts(

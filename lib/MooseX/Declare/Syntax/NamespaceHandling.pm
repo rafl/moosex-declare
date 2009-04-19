@@ -4,6 +4,7 @@ use Moose::Role;
 use MooseX::Declare::Util qw( outer_stack_peek );
 
 use aliased 'MooseX::Declare::Context::Namespaced';
+use aliased 'MooseX::Declare::Context::WithOptions';
 
 use namespace::clean -except => 'meta';
 
@@ -21,13 +22,15 @@ sub add_optional_customizations  { }
 sub handle_post_parsing          { }
 sub make_anon_metaclass          { }
 
-around context_traits => sub { super, Namespaced };
+around context_traits => sub { super, WithOptions, Namespaced };
 
 sub parse_specification {
     my ($self, $ctx) = @_;
 
     $self->parse_namespace_specification($ctx);
-    return $self->parse_option_specification($ctx);
+    $self->parse_option_specification($ctx);
+
+    return;
 }
 
 sub parse_namespace_specification {
@@ -47,7 +50,8 @@ sub parse {
     $ctx->skip_declarator;
 
     # read the name and unwrap the options
-    my $options = $self->parse_specification($ctx);
+    $self->parse_specification($ctx);
+
     my $name    = $ctx->namespace;
 
     my ($package, $anon);
@@ -63,7 +67,7 @@ sub parse {
     }
 
     # no name, no options, no block. Probably { class => 'foo' }
-    elsif (not(keys %$options) and $ctx->peek_next_char ne '{') {
+    elsif (not(keys %{ $ctx->options }) and $ctx->peek_next_char ne '{') {
         return;
     }
 
@@ -85,10 +89,10 @@ sub parse {
     );
 
     # allow consumer to provide specialisations
-    $self->add_namespace_customizations($ctx, $package, $options);
+    $self->add_namespace_customizations($ctx, $package);
 
     # make options a separate step
-    $self->add_optional_customizations($ctx, $package, $options);
+    $self->add_optional_customizations($ctx, $package);
 
     # finish off preamble with a namespace cleanup
     $ctx->add_preamble_code_parts(
