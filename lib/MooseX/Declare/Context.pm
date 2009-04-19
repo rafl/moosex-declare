@@ -94,6 +94,18 @@ sub peek_next_char {
     return substr $linestr, $self->offset, 1;
 }
 
+sub peek_next_word {
+    my ($self) = @_;
+
+    $self->skipspace;
+
+    my $len = Devel::Declare::toke_scan_word($self->offset, 1);
+    return unless $len;
+
+    my $linestr = $self->get_linestr;
+    return substr($linestr, $self->offset, $len);
+}
+
 sub inject_code_parts {
     my ($self, %args) = @_;
 
@@ -162,16 +174,29 @@ sub _build_dd_context {
     return DDContext->new(%{ $self->_dd_init_args });
 }
 
-sub strip_name_and_options {
+sub strip_word {
     my ($self) = @_;
+
     $self->skipspace;
+    my $linestr = $self->get_linestr;
+    return if substr($linestr, $self->offset, 1) =~ /[{;]/;
+
+    my $word = $self->peek_next_word;
+    return if !defined $word || $word =~ /^(?:extends|with|is)$/;
+
+    return $self->strip_name;
+}
+
+sub strip_options {
+    my ($self) = @_;
+    my %ret;
 
     # Make errors get reported from right place in source file
     local $Carp::Internal{'MooseX::Declare'} = 1;
     local $Carp::Internal{'Devel::Declare'} = 1;
 
-    my ($name, %ret);
-    my $linestr = $self->get_linestr();
+    $self->skipspace;
+    my $linestr = $self->get_linestr;
 
     while (substr($linestr, $self->offset, 1) !~ /[{;]/) {
         my $key = $self->strip_name;
@@ -181,15 +206,8 @@ sub strip_name_and_options {
             return; # This is the case when { class => 'foo' } happens
         }
 
-        if ($key !~ /^(extends|with|is)$/) {
-            unless (keys %ret) {
-                $name = $key;
-                $self->skipspace;
-                $linestr = $self->get_linestr();
-                next;
-            }
-            croak "unknown option name '$key'";
-        }
+        croak "unknown option name '$key'"
+            unless $key =~ /^(extends|with|is)$/;
 
         my $val = $self->strip_name;
         if (!defined $val) {
@@ -203,16 +221,26 @@ sub strip_name_and_options {
 
         $ret{$key} ||= [];
         push @{ $ret{$key} }, ref $val ? @{ $val } : $val;
+    } continue {
         $self->skipspace;
         $linestr = $self->get_linestr();
     }
 
-    return ($name, { map {
+    return { map {
         my $key = $_;
         $key eq 'is'
             ? ($key => { map { ($_ => 1) } @{ $ret{$key} } })
             : ($key => $ret{$key})
-    } keys %ret } );
+    } keys %ret };
+}
+
+sub strip_name_and_options {
+    my ($self) = @_;
+
+    my $name    = $self->strip_word;
+    my $options = $self->strip_options;
+
+    return ($name, $options);
 }
 
 

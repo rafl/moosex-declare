@@ -1,7 +1,6 @@
 package MooseX::Declare::Syntax::NamespaceHandling;
 
 use Moose::Role;
-
 use MooseX::Declare::Util qw( outer_stack_peek );
 
 use namespace::clean -except => 'meta';
