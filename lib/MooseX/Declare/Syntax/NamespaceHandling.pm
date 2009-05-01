@@ -96,7 +96,9 @@ sub parse {
 
     # finish off preamble with a namespace cleanup
     $ctx->add_preamble_code_parts(
-        'use namespace::clean -except => [qw( meta )]',
+        $ctx->options->{is}->{dirty}
+            ? 'use namespace::clean -except => [qw( meta )]'
+            : 'use namespace::autoclean'
     );
 
     # clean up our stack afterwards, if there was a name
