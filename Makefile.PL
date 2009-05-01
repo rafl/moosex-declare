@@ -9,7 +9,7 @@ requires 'Devel::Declare' => '0.003005';
 requires 'B::Hooks::EndOfScope';
 requires 'namespace::clean';
 requires 'Moose';
-requires 'MooseX::Method::Signatures' => '0.10';
+requires 'MooseX::Method::Signatures' => '0.16';
 
 test_requires 'Test::Exception';
 test_requires 'Test::NoWarnings';

@@ -9,7 +9,7 @@ use aliased 'MooseX::Declare::Syntax::Keyword::Role',  'RoleKeyword';
 
 use namespace::clean;
 
-our $VERSION = '0.19';
+our $VERSION = '0.20';
 
 sub import {
     my ($class, %args) = @_;
@@ -127,7 +127,7 @@ Options can also be provided for anonymous classes using the same syntax:
     my $anon_role = role { ... };
 
 Declares a new role. The role can be either named or anonymous, depending on
-wheter or not a name is given. Within the role definition Moose::Role and
+whether or not a name is given. Within the role definition Moose::Role and
 MooseX::Method::Signatures are set up automatically in addition to the other
 keywords described in this document. Again, namespace::clean is injected to
 clean up Moose::Role and for you.
@@ -220,6 +220,8 @@ L<MooseX::Method::Signatures>
 
 L<namespace::clean>
 
+vim syntax: L<http://www.vim.org/scripts/script.php?script_id=2526>
+
 =head1 AUTHOR
 
 Florian Ragwitz E<lt>rafl@debian.orgE<gt>
@@ -231,6 +233,8 @@ With contributions from:
 =item Ash Berlin E<lt>ash@cpan.orgE<gt>
 
 =item Hans Dieter Pearcey E<lt>hdp@cpan.orgE<gt>
+
+=item Matt Kraai E<lt>kraai@ftbfs.orgE<gt>
 
 =item Nelo Onyiah E<lt>nelo.onyiah@gmail.comE<gt>
 
