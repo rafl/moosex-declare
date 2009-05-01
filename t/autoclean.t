@@ -1,5 +1,5 @@
 use MooseX::Declare;
-use Test::More tests => 2;
+use Test::More tests => 3;
 
 class Foo {
     use Carp 'croak';
