@@ -1,9 +1,8 @@
-use Test::More tests => 1;
+use Test::More tests => 6;
 
 use MooseX::Declare;
 
-TODO: {
-    local $TODO = 'method is set up outside of classes and roles';
-    eval 'method foo ($bar) { }';
-    ok($@, 'method keyword not set up outside of classes');
+for my $inner (qw( method around before after augment override )) {
+    eval $inner . ' foo ($bar) { }';
+    ok($@, "$inner keyword not set up outside of classes");
 }

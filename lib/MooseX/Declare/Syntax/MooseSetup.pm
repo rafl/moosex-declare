@@ -6,6 +6,7 @@ use Moose::Util  qw( find_meta );
 use Sub::Install qw( install_sub );
 
 use aliased 'MooseX::Declare::Syntax::Keyword::MethodModifier';
+use aliased 'MooseX::Declare::Syntax::Keyword::Method';
 use aliased 'MooseX::Declare::Syntax::Keyword::Clean', 'CleanKeyword';
 
 use namespace::clean -except => 'meta';
@@ -25,6 +26,9 @@ sub import_symbols_from { 'Moose' }
 
 around default_inner => sub {
     return [
+        Method->new(
+            identifier          => 'method',
+        ),
         MethodModifier->new(
             identifier          => 'around',
             modifier_type       => 'around',
