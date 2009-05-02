@@ -23,7 +23,7 @@ sub import {
         $keyword->setup_for($caller, %args);
     }
 
-    MooseX::Method::Signatures->setup_for($caller)
+    #MooseX::Method::Signatures->setup_for($caller)
 }
 
 sub keywords {
