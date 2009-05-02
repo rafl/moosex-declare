@@ -3,7 +3,6 @@ use warnings;
 
 package MooseX::Declare;
 
-use MooseX::Method::Signatures;
 use aliased 'MooseX::Declare::Syntax::Keyword::Class', 'ClassKeyword';
 use aliased 'MooseX::Declare::Syntax::Keyword::Role',  'RoleKeyword';
 
@@ -22,8 +21,6 @@ sub import {
     for my $keyword ($class->keywords) {
         $keyword->setup_for($caller, %args);
     }
-
-    #MooseX::Method::Signatures->setup_for($caller)
 }
 
 sub keywords {
