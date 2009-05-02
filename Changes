@@ -1,3 +1,11 @@
+0.20  Fri, 01 May 2009 10:40:02 +0200
+  * Massive refactor for extensibility (Robert Sedlacek).
+  * Allow passing multiple comma seperated values to options
+    without repeating the key.
+  * Depend on MX::Method::Signatures 0.16 for non-scalar parameters.
+  * Documentation fixes (Matt Kraai).
+  * Added link to vim syntax (Rafael Kitover).
+
 0.10  Wed, 08 Apr 2009 04:09:56 +0200
   * Depend on D::D 0.003005 for the inject_if_block return value.
   * Docs now mention namespace::clean (Ash Berlin).
