@@ -222,6 +222,8 @@ L<namespace::clean>
 
 vim syntax: L<http://www.vim.org/scripts/script.php?script_id=2526>
 
+emacs syntax: L<http://github.com/jrockway/cperl-mode>
+
 =head1 AUTHOR
 
 Florian Ragwitz E<lt>rafl@debian.orgE<gt>
