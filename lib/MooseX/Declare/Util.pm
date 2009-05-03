@@ -37,3 +37,46 @@ sub outer_stack_peek {
 }
 
 1;
+
+=head1 NAME
+
+MooseX::Declare::Util - Common declarative utility functions
+
+=head1 DESCRIPTION
+
+This exporter collection contains the commonly used functions in L<MooseX::Declare>.
+
+=head1 EXPORTS
+
+=head2 outer_stack_push
+
+  outer_stack_push (Str $file, Str $value)
+
+Pushes the C<$value> on the internal stack for the file C<$file>.
+
+=head2 outer_stack_pop
+
+  outer_stack_pop (Str $file)
+
+Removes one item from the internal stack of the file C<$file>.
+
+=head2 outer_stack_peek
+
+  outer_stack_peek (Str $file)
+
+Returns the topmost item in the internal stack for C<$file> without removing
+it from the stack.
+
+=head1 SEE ALSO
+
+=over
+
+=item * L<MooseX::Declare>
+
+=back
+
+=head1 AUTHOR, COPYRIGHT & LICENSE
+
+See L<MooseX::Declare>
+
+=cut

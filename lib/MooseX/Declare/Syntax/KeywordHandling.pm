@@ -60,3 +60,72 @@ sub parse_declaration {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+MooseX::Declare::Syntax::KeywordHandling - Basic keyword functionality
+
+=head1 DESCRIPTION
+
+This role provides the functionality common for all keyword handlers
+in L<MooseX::Declare>.
+
+=head1 ATTRIBUTES
+
+=head2 identifier
+
+This is the name of the actual keyword. It is a required string that is in
+the same format as a usual Perl identifier.
+
+=head1 REQUIRED METHODS
+
+=head2 parse
+
+  Object->parse (Object $context)
+
+This method must implement the actual parsing of the keyword syntax.
+
+=head1 METHODS
+
+=head2 get_identifier
+
+  Str Object->get_identifier ()
+
+Returns the name the handler will be setup under.
+
+=head2 setup_for
+
+  Object->setup_for (ClassName $class, %args)
+
+This will setup the handler in the specified C<$class>. The handler will
+dispatch to the L</parse_declaration> method when the keyword is used.
+
+A normal code reference will also be exported into the calling namespace.
+It will either be empty or, if a C<generate_export> method is provided,
+the return value of that method.
+
+=head2 parse_declaration
+
+  Object->parse_declaration (Str $filename, HashRef $setup_args, @call_args)
+
+This simply creates a new L<context|MooseX::Declare::Context> and passes it
+to the L</parse> method.
+
+=head1 SEE ALSO
+
+=over
+
+=item * L<MooseX::Declare>
+
+=item * L<MooseX::Declare::Context>
+
+=back
+
+=head1 AUTHOR, COPYRIGHT & LICENSE
+
+See L<MooseX::Declare>
+
+=cut
+
