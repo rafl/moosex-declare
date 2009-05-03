@@ -1,10 +1,11 @@
 package MooseX::Declare::Syntax::NamespaceHandling;
 
 use Moose::Role;
-use MooseX::Declare::Util qw( outer_stack_peek );
+use MooseX::Declare::Util   qw( outer_stack_peek );
 
 use aliased 'MooseX::Declare::Context::Namespaced';
 use aliased 'MooseX::Declare::Context::WithOptions';
+use aliased 'MooseX::Declare::StackItem';
 
 use namespace::clean -except => 'meta';
 
@@ -41,6 +42,26 @@ sub parse_namespace_specification {
 sub parse_option_specification {
     my ($self, $ctx) = @_;
     return scalar $ctx->strip_options;
+}
+
+sub generate_inline_stack {
+    my ($self, $ctx) = @_;
+
+    return join ', ',
+        map { $_->serialize }
+            @{ $ctx->stack },
+            $self->generate_current_stack_item($ctx);
+}
+
+sub generate_current_stack_item {
+    my ($self, $ctx) = @_;
+
+    return StackItem->new(
+        identifier    => $self->identifier,
+        is_dirty      => $ctx->options->{is}{dirty},
+        handler       => ref($self),
+        namespace     => $ctx->namespace,
+    );
 }
 
 sub parse {
@@ -82,9 +103,9 @@ sub parse {
     $ctx->add_preamble_code_parts(
         "package ${package}",
         sprintf(
-            "use MooseX::Declare %s => '%s', file => __FILE__, stack => [qw( %s )]",
+            "use MooseX::Declare %s => '%s', file => __FILE__, stack => [ %s ]",
             outer_package => $package,
-            join(' ', @{ $ctx->stack }, $self->identifier),
+            $self->generate_inline_stack($ctx),
         ),
     );
 
