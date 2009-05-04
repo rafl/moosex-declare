@@ -34,16 +34,19 @@ around default_inner => sub {
             modifier_type       => 'around',
             prototype_beginning => '$orig: $self',
         ),
-        CleanKeyword->new(
-            identifier          => 'clean',
-        ),
         map { MethodModifier->new(identifier => $_, modifier_type => $_) }
             qw( after before override augment ),
     ];
 };
 
+after setup_inner_for => sub {
+    my ($self, $setup_class, %args) = @_;
+    my $keyword = CleanKeyword->new(identifier => 'clean');
+    $keyword->setup_for($setup_class, %args);
+};
+
 after add_namespace_customizations => sub {
-    my ($self, $ctx, $package, $options) = @_;
+    my ($self, $ctx, $package) = @_;
 
     # add Moose initializations to preamble
     $ctx->add_preamble_code_parts(
@@ -54,7 +57,7 @@ after add_namespace_customizations => sub {
     $ctx->add_cleanup_code_parts(
         "${package}->meta->make_immutable",
     ) if $self->auto_make_immutable
-         and not exists $options->{is}{mutable};
+         and not exists $ctx->options->{is}{mutable};
 };
 
 after handle_post_parsing => sub {

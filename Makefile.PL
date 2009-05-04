@@ -8,6 +8,7 @@ all_from 'lib/MooseX/Declare.pm';
 requires 'Devel::Declare' => '0.003005';
 requires 'B::Hooks::EndOfScope';
 requires 'namespace::clean';
+requires 'namespace::autoclean' => '0.05';
 requires 'Moose';
 requires 'MooseX::Method::Signatures' => '0.16';
 

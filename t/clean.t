@@ -2,7 +2,7 @@ use MooseX::Declare;
 use Test::More tests => 4;
 use Test::Exception;
 
-class Foo {
+class Foo is dirty {
     use Carp qw/croak/;
     use MooseX::Types::Moose qw/Str/;
     use MooseX::Types::Structured qw/Tuple/;

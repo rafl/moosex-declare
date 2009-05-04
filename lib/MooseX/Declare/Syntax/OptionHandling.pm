@@ -11,7 +11,8 @@ requires qw( get_identifier );
 sub ignored_options { qw( is ) }
 
 after add_optional_customizations => sub {
-    my ($self, $ctx, $package, $options) = @_;
+    my ($self, $ctx, $package) = @_;
+    my $options = $ctx->options;
 
     # ignored options
     my %ignored = map { ($_ => 1) } $self->ignored_options;
