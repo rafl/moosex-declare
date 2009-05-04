@@ -87,7 +87,8 @@ Declares a new class. The class can be either named or anonymous, depending on
 whether or not a classname is given. Within the class definition Moose and
 L<MooseX::Method::Signatures> are set up automatically in addition to the other
 keywords described in this document. At the end of the definition the class
-will be made immutable. namespace::clean is injected to clean up Moose for you.
+will be made immutable. namespace::autoclean is injected to clean up Moose and
+other imports for you.
 
 Because of the way the options are parsed, you cannot have a class named "is",
 "with" or "extends".
@@ -129,8 +130,8 @@ Options can also be provided for anonymous classes using the same syntax:
 Declares a new role. The role can be either named or anonymous, depending on
 whether or not a name is given. Within the role definition Moose::Role and
 MooseX::Method::Signatures are set up automatically in addition to the other
-keywords described in this document. Again, namespace::clean is injected to
-clean up Moose::Role and for you.
+keywords described in this document. Again, namespace::autoclean is injected to
+clean up Moose::Role and other imports for you.
 
 It's possible to specify options for roles:
 
@@ -161,6 +162,30 @@ automatically set up as the invocant for the method.
 
 =head2 clean
 
+Sometimes you don't want the automatic cleaning the C<class> and C<role>
+keywords provide using namespace::autoclean. In those cases you can specify the
+C<dirty> trait for your class or role:
+
+    use MooseX::Declare;
+    class Foo is dirty { ... }
+
+This will prevent cleaning of your namespace, except for the keywords imported
+from C<Moose> or C<Moose::Role>. Additionally, a C<clean> keyword is provided,
+which allows you to explicitly clean all functions that were defined prior to
+calling C<clean>. Here's an example:
+
+    use MooseX::Declare;
+    class Foo is dirty {
+        sub helper_function { ... }
+        clean;
+        method foo ($stuff) { ...; return helper_function($stuff); }
+    }
+
+With that, the helper function won't be available as a method to a user of your
+class, but you're still able to use it inside your class.
+
+=head1 NOTE ON IMPORTS
+
 When creating a class with MooseX::Declare like:
 
     use MooseX::Declare;
@@ -171,10 +196,9 @@ What actually happens is something like this:
     {
         package Foo;
         use Moose;
-        use namespace::clean -except => 'meta';
+        use namespace::autoclean;
         ...
         __PACKAGE__->meta->mate_immutable();
-        1;
     }
 
 So if you declare imports outside the class, the symbols get imported into the
@@ -188,18 +212,12 @@ from within the class:
         method pp($value)   { $self->dump($value) } # an alias for our dump method
     }
 
-Furthermore, any imports will not be cleaned up by L<namespace::clean> after
-compilation since the class knows nothing about them! The temptation to do this
-may stem from wanting to keep all your import declarations in the same place.
-
-The solution is two-fold. First, only import MooseX::Declare outside the class
-definition (because you have to). Make all other imports inside the class definition
-and clean up with the C<clean> keyword:
+To solve this, only import MooseX::Declare outside the class definition
+(because you have to). Make all other imports inside the class definition.
 
     use MooseX::Declare;
     class Foo {
         use Data::Dump qw/dump/;
-        clean;
         method dump($value) { return dump($value) } # Data::Dump::dump IS in Foo::
         method pp($value)   { $self->dump($value) } # an alias for our dump method
     }
@@ -208,7 +226,10 @@ and clean up with the C<clean> keyword:
     Foo->new->pp($some_value);
 
 B<NOTE> that the import C<Data::Dump::dump()> and the method C<Foo::dump()>,
-although having the same name, do not conflict with each other.
+although having the same name, do not conflict with each other, because the
+imported C<dump> function will be cleaned during compile time, so only the
+method remains there at run time. If you want to do more esoteric things with
+imports, have a look at the C<clean> keyword and the C<dirty> trait.
 
 =head1 SEE ALSO
 
@@ -218,7 +239,7 @@ L<Moose::Role>
 
 L<MooseX::Method::Signatures>
 
-L<namespace::clean>
+L<namespace::autoclean>
 
 vim syntax: L<http://www.vim.org/scripts/script.php?script_id=2526>
 
