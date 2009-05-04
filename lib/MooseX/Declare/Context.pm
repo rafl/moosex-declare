@@ -303,7 +303,7 @@ will be delegated to an internally stored instance of it.
   Object->add_scope_code_parts    (CodeRef @parts)
   Object->add_cleanup_code_parts  (CodeRef @parts)
 
-For these three methods please look at the corresponding C<*_code_parts<
+For these three methods please look at the corresponding C<*_code_parts>
 attribute in the list above. These methods are merely convenience methods
 that allow adding entries to the code part containers.
 
@@ -379,10 +379,10 @@ The options that followed the name. This is the returned format:
 
 =item * L<Devel::Declare::Context::Simple>
 
+=back
+
 =head1 AUTHOR, COPYRIGHT & LICENSE
 
 See L<MooseX::Declare>
-
-=back
 
 =cut

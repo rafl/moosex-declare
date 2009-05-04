@@ -206,7 +206,9 @@ array holding the roles of the current namespace.
 
 =item * L<MooseX::Declare>
 
-=back * L<Moose>
+=item * L<Moose>
+
+=back
 
 =head1 AUTHOR, COPYRIGHT & LICENSE
 
