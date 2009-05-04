@@ -20,3 +20,53 @@ sub add_extends_option_customizations {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+MooseX::Declare::Syntax::Extending - Extending with superclasses
+
+=head1 DESCRIPTION
+
+Extends a class by a specified C<extends> option.
+
+=head1 CONSUMES
+
+=over
+
+=item * L<MooseX::Declare::Syntax::OptionHandling>
+
+=back
+
+=head1 METHODS
+
+=head2 add_extends_option_customizations
+
+  Object->add_extends_option_customizations (
+      Object   $ctx,
+      Str      $package,
+      ArrayRef $superclasses,
+      HashRef  $options
+  )
+
+This will add a code part that will call C<extends> with the C<$superclasses>
+as arguments.
+
+=head1 SEE ALSO
+
+=over
+
+=item * L<MooseX::Declare>
+
+=item * L<MooseX::Declare::Syntax::Keyword::Class>
+
+=item * L<MooseX::Declare::Syntax::OptionHandling>
+
+=back
+
+=head1 AUTHOR, COPYRIGHT & LICENSE
+
+See L<MooseX::Declare>
+
+=cut
