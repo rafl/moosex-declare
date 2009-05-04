@@ -1,11 +1,19 @@
 package MooseX::Declare::Context;
 
 use Moose;
+use Moose::Util::TypeConstraints;
 use Carp qw/croak/;
 
 use aliased 'Devel::Declare::Context::Simple', 'DDContext';
 
 use namespace::clean -except => 'meta';
+
+subtype 'MooseX::Declare::BlockCodePart',
+    as 'ArrayRef',
+    where { @$_ > 1 and sub { grep { $_[0] eq $_ } qw( BEGIN END ) } -> ($_->[0]) };
+
+subtype 'MooseX::Declare::CodePart',
+     as 'Str|MooseX::Declare::BlockCodePart';
 
 has _dd_context => (
     is          => 'ro',
@@ -31,21 +39,21 @@ has caller_file => (
 
 has preamble_code_parts => (
     is          => 'rw',
-    isa         => 'ArrayRef',
+    isa         => 'ArrayRef[MooseX::Declare::CodePart]',
     required    => 1,
     default     => sub { [] },
 );
 
 has scope_code_parts => (
     is          => 'rw',
-    isa         => 'ArrayRef',
+    isa         => 'ArrayRef[MooseX::Declare::CodePart]',
     required    => 1,
     default     => sub { [] },
 );
 
 has cleanup_code_parts => (
     is          => 'rw',
-    isa         => 'ArrayRef',
+    isa         => 'ArrayRef[MooseX::Declare::CodePart]',
     required    => 1,
     default     => sub { [] },
 );
