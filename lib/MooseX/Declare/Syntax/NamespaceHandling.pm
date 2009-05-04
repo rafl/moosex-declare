@@ -3,6 +3,7 @@ package MooseX::Declare::Syntax::NamespaceHandling;
 use Moose::Role;
 
 use MooseX::Declare::Util qw( outer_stack_peek );
+use Carp;
 
 use namespace::clean -except => 'meta';
 
@@ -48,7 +49,7 @@ sub parse {
     # we have options and/or a block, but not name
     else {
         $anon = $self->make_anon_metaclass
-            or die "make_anon_metaclass did not return an anonymous meta class\n";
+            or croak sprintf 'Unable to create an anonymized %s namespace', $self->identifier;
         $package = $anon->name;
     }
 

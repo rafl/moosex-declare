@@ -130,6 +130,10 @@ sub inject_code_parts {
         croak "block or semi-colon expected after " . $self->declarator . " statement"
             unless $self->peek_next_char eq ';';
 
+        # if we can't handle non-blocks, we expect one
+        croak "block expected after " . $self->declarator . " statement"
+            unless exists $args{missing_block_handler};
+
         # delegate the processing of the missing block
         $args{missing_block_handler}->($self, $inject, %args);
     }
