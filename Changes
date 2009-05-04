@@ -1,3 +1,22 @@
+0.21  Tue, 05 May 2009 01:55:41 +0200
+  * Add tests for automatic cleaning with the clean/dirty traits
+    (Stevan Little).
+  * Automatically clean all imports at the end of compile time unless the
+    dirty trait is given.
+  * Clean now warns in autoclean namespaces (Robert Sedlacek).
+  * Document all refactored components (Robert Sedlacek).
+  * Improve error reporting (Robert Sedlacek).
+  * Added link to emacs syntax highlighter (Nelo Onyiah).
+  * Fix a doc typo (reported by Alexander Hartmaier).
+  * Make method keyword now only available by default in namespaces that
+    consumed MooseSetup (Robert Sedlacek).
+  * Be more strict about what gets accepted as injectable "code part"
+    (Robert Sedlacek).
+  * Split up namespaced declaration parsing and added context traits
+    (Robert Sedlacek).
+  * Break strip_name_and_options into strip_word and strip_options.
+  * Some refactoring on how options are handled.
+
 0.20  Fri, 01 May 2009 10:40:02 +0200
   * Massive refactor for extensibility (Robert Sedlacek).
   * Allow passing multiple comma seperated values to options
