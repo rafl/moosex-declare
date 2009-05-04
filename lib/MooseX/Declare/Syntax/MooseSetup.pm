@@ -60,8 +60,8 @@ after add_namespace_customizations => sub {
          and not exists $ctx->options->{is}{mutable};
 };
 
-after handle_post_parsing => sub {
-    my ($self, $ctx, $package, $class) = @_;
+around handle_post_parsing => sub {
+    my ($orig, $self, $ctx, $package, $class) = @_;
 
     # finish off by apply the roles
     my $create_class = sub {

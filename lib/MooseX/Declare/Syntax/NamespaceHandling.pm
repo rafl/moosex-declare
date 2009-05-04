@@ -137,7 +137,7 @@ sub parse {
     );
 
     # a last chance to change things
-    $self->handle_post_parsing($ctx, $package, defined($name) ? $name : $anon);
+    return $self->handle_post_parsing($ctx, $package, defined($name) ? $name : $anon);
 }
 
 1;
