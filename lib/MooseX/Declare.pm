@@ -170,7 +170,7 @@ What actually happens is something like this:
         use Moose;
         use namespace::clean -except => 'meta';
         ...
-        __PACKAGE__->meta->mate_immutable();
+        __PACKAGE__->meta->make_immutable;
         1;
     }
 
