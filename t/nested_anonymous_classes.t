@@ -46,10 +46,7 @@ my $baz = Baz->new();
 $baz->foo();
 CLASS2
 
-{
-    local $TODO = 'broken since 0.19';
-    lives_ok(sub {
-        eval $stuff2;
-        die $@ if $@;
-    }, 'Nested named declaration and execution outside of declaration scope works');
-}
+lives_ok(sub {
+    eval $stuff2;
+    die $@ if $@;
+}, 'Nested named declaration and execution outside of declaration scope works');
