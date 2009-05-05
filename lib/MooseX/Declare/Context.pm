@@ -131,6 +131,8 @@ sub inject_code_parts {
         $inject .= ';' . $self->scope_injector_call($self->_joined_statements('cleanup'));
     }
 
+    $inject .= ';';
+
     # we have a block
     if ($self->peek_next_char eq '{') {
         $self->inject_if_block("$inject");
