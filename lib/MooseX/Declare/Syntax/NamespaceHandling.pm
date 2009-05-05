@@ -74,7 +74,7 @@ sub parse {
     # read the name and unwrap the options
     $self->parse_specification($ctx);
 
-    my $name    = $ctx->namespace;
+    my $name = $ctx->namespace;
 
     my ($package, $anon);
 
@@ -82,9 +82,11 @@ sub parse {
     if (defined $name) {
         $package = $name;
 
-        # there is an outer namespace stack item, meaning we namespace below it
+        # there is an outer namespace stack item, meaning we namespace below
+        # it, if the name starts with ::
         if (my $outer = outer_stack_peek $ctx->caller_file) {
-            $package = join '::' => $outer, $package;
+            $package = $outer . $package
+                if $name =~ /^::/;
         }
     }
 
