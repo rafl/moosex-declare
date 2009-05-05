@@ -4,6 +4,7 @@ use Test::More tests => 2;
 use Test::Exception;
 
 use MooseX::Declare;
+
 my $stuff = <<'CLASS';
 use MooseX::Declare;
 role Bar
@@ -20,13 +21,10 @@ class Foo with Bar
 }
 CLASS
 
-TODO: {
-    local $TODO = 'broken since 0.19';
-    lives_ok(sub {
-        eval $stuff;
-        die $@ if $@;
-    }, 'Compiled nested anonymous composed class successfully');
-}
+lives_ok(sub {
+    eval $stuff;
+    die $@ if $@;
+}, 'Compiled nested anonymous composed class successfully');
 
 my $stuff2 = <<'CLASS2';
 use MooseX::Declare;
