@@ -5,7 +5,7 @@ use inc::Module::Install;
 name 'MooseX-Declare';
 all_from 'lib/MooseX/Declare.pm';
 
-requires 'Devel::Declare' => '0.003005';
+requires 'Devel::Declare' => '0.005001';
 requires 'B::Hooks::EndOfScope';
 requires 'namespace::clean';
 requires 'namespace::autoclean' => '0.05';
