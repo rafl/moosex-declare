@@ -258,6 +258,8 @@ With contributions from:
 
 =item Nelo Onyiah E<lt>nelo.onyiah@gmail.comE<gt>
 
+=item nperez E<lt>nperez@cpan.orgE<gt>
+
 =item Piers Cawley E<lt>pdcawley@bofh.org.ukE<gt>
 
 =item Stevan Little E<lt>stevan.little@iinteractive.comE<gt>
