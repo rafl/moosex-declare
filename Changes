@@ -1,3 +1,12 @@
+0.22  Wed, 06 May 2009 02:37:37 +0200
+  * Add TODO tests for creating nested anonymous classes and roles
+    (nperez).
+  * Always end injected code with a semicolon.
+  * Only do namespace nesting if the inner namespace starts with "::".
+  * Depend on D::D 0.005001 to get a skip_declarator that doesn't fail
+    when code is being compiled between calling the linstr callback and
+    skip_declarator. This appears to be necessary to work on 5.8.
+
 0.21  Tue, 05 May 2009 01:55:41 +0200
   * Add tests for automatic cleaning with the clean/dirty traits
     (Stevan Little).
