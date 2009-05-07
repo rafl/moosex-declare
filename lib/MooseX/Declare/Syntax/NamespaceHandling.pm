@@ -106,7 +106,8 @@ sub parse {
     $ctx->add_preamble_code_parts(
         "package ${package}",
         sprintf(
-            "use MooseX::Declare %s => '%s', file => __FILE__, stack => [ %s ]",
+            "use %s %s => '%s', file => __FILE__, stack => [ %s ]",
+            $ctx->provided_by,
             outer_package => $package,
             $self->generate_inline_stack($ctx),
         ),

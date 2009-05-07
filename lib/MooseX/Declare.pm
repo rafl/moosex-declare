@@ -19,7 +19,7 @@ sub import {
     warnings->import;
 
     for my $keyword ($class->keywords) {
-        $keyword->setup_for($caller, %args);
+        $keyword->setup_for($caller, %args, provided_by => $class);
     }
 }
 

@@ -31,6 +31,12 @@ has _dd_init_args => (
     required    => 1,
 );
 
+has provided_by => (
+    is          => 'ro',
+    isa         => 'ClassName',
+    required    => 1,
+);
+
 has caller_file => (
     is          => 'rw',
     isa         => 'Str',
