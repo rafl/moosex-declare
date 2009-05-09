@@ -1,5 +1,5 @@
 package MooseX::Declare::Syntax::MooseSetup;
- 
+
 use Moose::Role;
 
 use Moose::Util  qw( find_meta );

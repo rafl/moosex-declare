@@ -19,7 +19,7 @@ role Bar {
 }
 
 class Foo with Bar {
-  method do_foo { 
+  method do_foo {
     push @log, { class => 'string' };
   }
 }
