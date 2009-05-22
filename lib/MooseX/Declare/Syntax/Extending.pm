@@ -2,18 +2,26 @@ package MooseX::Declare::Syntax::Extending;
 
 use Moose::Role;
 
+use aliased 'MooseX::Declare::Context::Namespaced';
+
 use namespace::clean -except => 'meta';
 
 with qw(
     MooseX::Declare::Syntax::OptionHandling
 );
 
+around context_traits => sub { shift->(@_), Namespaced };
+
 sub add_extends_option_customizations {
     my ($self, $ctx, $package, $superclasses) = @_;
 
     # add code for extends keyword
     $ctx->add_scope_code_parts(
-        sprintf 'extends %s', join ', ', map { "'$_'" } @{ $superclasses },
+        sprintf 'extends %s', 
+            join ', ', 
+            map  { "'$_'" } 
+            map  { $ctx->qualify_namespace($_) }
+                @{ $superclasses },
     );
 
     return 1;

@@ -5,6 +5,8 @@ use Moose::Util::TypeConstraints;
 use Devel::Declare ();
 use Sub::Install qw( install_sub );
 use Moose::Meta::Class ();
+use List::MoreUtils qw( uniq );
+
 use aliased 'MooseX::Declare::Context';
 
 use namespace::clean -except => 'meta';
@@ -60,7 +62,7 @@ sub parse_declaration {
     Class::MOP::load_class $ctx_class;
 
     # do we have traits?
-    if (my @ctx_traits = $self->context_traits) {
+    if (my @ctx_traits = uniq $self->context_traits) {
 
         Class::MOP::load_class $_
             for @ctx_traits;

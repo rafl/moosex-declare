@@ -11,6 +11,7 @@ requires 'namespace::clean';
 requires 'namespace::autoclean' => '0.05';
 requires 'Moose';
 requires 'MooseX::Method::Signatures' => '0.16';
+requires 'List::MoreUtils';
 
 test_requires 'Test::Exception';
 test_requires 'Test::NoWarnings';
