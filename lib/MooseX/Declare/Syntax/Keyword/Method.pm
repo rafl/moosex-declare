@@ -7,8 +7,8 @@ use namespace::clean -except => 'meta';
 with 'MooseX::Declare::Syntax::MethodDeclaration';
 
 sub register_method_declaration {
-    my ($self, $class, $method) = @_;
-    return $class->meta->add_method($method->name, $method);
+    my ($self, $meta, $name, $method) = @_;
+    return $meta->add_method($name, $method);
 }
 
 1;
@@ -36,10 +36,23 @@ that allows you to install keywords that declare methods.
 
 =head2 register_method_declaration
 
-  Object->register_method_declaration (ClassName $class, Object $method)
+  Object->register_method_declaration (Object $metaclass, Str $name, Object $method)
 
 This method required by the method declaration role will register the finished
-method object via the C<$class> metaclass instance's C<add_method> method.
+method object via the C<< $metaclass->add_method >> method.
+
+  MethodModifier->new(
+      identifier           => 'around',
+      modifier_type        => 'around',
+      prototype_injections => {
+          declarator => 'around',
+          injections => [ 'CodeRef $orig' ],
+      },
+  );
+
+This will mean that the signature C<(Str $foo)> will become
+C<CodeRef $orig: Object $self, Str $foo> and and C<()> will become
+C<CodeRef $orig: Object $self>.
 
 =head1 SEE ALSO
 

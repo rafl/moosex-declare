@@ -15,8 +15,8 @@ has modifier_type => (
 );
 
 sub register_method_declaration {
-    my ($self, $class, $method) = @_;
-    return Moose::Util::add_method_modifier($class, $self->modifier_type, [$method->name, $method->body]);
+    my ($self, $meta, $name, $method) = @_;
+    return Moose::Util::add_method_modifier($meta->name, $self->modifier_type, [$name, $method->body]);
 }
 
 1;
@@ -56,9 +56,9 @@ A required string that is one of:
 
 =head2 register_method_declaration
 
-  Object->register_method_declaration (ClassName $class, Object $method)
+  Object->register_method_declaration (Object $metaclass, Str $name, Object $method)
 
-This will add the method modifier to the C<$class> via L<Moose::Util>s
+This will add the method modifier to the C<$metaclass> via L<Moose::Util>s
 C<add_method_modifier>, whose return value will also be returned from this
 method.
 

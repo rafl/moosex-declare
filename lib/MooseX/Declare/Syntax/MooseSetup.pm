@@ -30,9 +30,12 @@ around default_inner => sub {
             identifier          => 'method',
         ),
         MethodModifier->new(
-            identifier          => 'around',
-            modifier_type       => 'around',
-            prototype_beginning => '$orig: $self',
+            identifier           => 'around',
+            modifier_type        => 'around',
+            prototype_injections => {
+                declarator => 'around',
+                injections => [ 'CodeRef $orig' ],
+            },
         ),
         map { MethodModifier->new(identifier => $_, modifier_type => $_) }
             qw( after before override augment ),
