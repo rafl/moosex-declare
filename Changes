@@ -1,3 +1,13 @@
+0.23  Thu, 25 Jun 2009 05:09:10 +0200
+  * Add test to make sure methods returned from meta are
+    MooseX::Method::Signatures::Meta::Method (nperez).
+  * Add the actual ::Signature methods to the meta class instead of letting it
+    wrap the coderef itself.
+  * Make inner scopes inherit the declaration provider instead of hardcoding
+    'MooseX::Declare' (Robert 'phaylon' Sedlacek).
+  * Fix test failure on new Moose versions, which inline a DESTROY method on
+    immutalisation.
+
 0.22  Wed, 06 May 2009 02:37:37 +0200
   * Add TODO tests for creating nested anonymous classes and roles
     (nperez).

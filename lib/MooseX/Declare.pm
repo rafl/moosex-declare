@@ -8,7 +8,7 @@ use aliased 'MooseX::Declare::Syntax::Keyword::Role',  'RoleKeyword';
 
 use namespace::clean;
 
-our $VERSION = '0.22';
+our $VERSION = '0.23';
 
 sub import {
     my ($class, %args) = @_;
