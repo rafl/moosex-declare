@@ -117,13 +117,13 @@ my @Point_methods = qw(meta new x y clear DESTROY);
 my @Point_attrs   = ('x', 'y');
 
 is_deeply(
-	[ sort @Point_methods                 ],
 	[ sort Point->meta->get_method_list() ],
+	[ sort @Point_methods                 ],
 	'... we match the method list for Point');
 
 is_deeply(
-	[ sort @Point_attrs                      ],
 	[ sort Point->meta->get_attribute_list() ],
+	[ sort @Point_attrs                      ],
 	'... we match the attribute list for Point');
 
 foreach my $method (@Point_methods) {
@@ -149,13 +149,13 @@ my @Point3D_methods = qw(new meta z clear DESTROY);
 my @Point3D_attrs   = ('z');
 
 is_deeply(
-	[ sort @Point3D_methods                 ],
 	[ sort Point3D->meta->get_method_list() ],
+	[ sort @Point3D_methods                 ],
 	'... we match the method list for Point3D');
 
 is_deeply(
-	[ sort @Point3D_attrs                      ],
 	[ sort Point3D->meta->get_attribute_list() ],
+	[ sort @Point3D_attrs                      ],
 	'... we match the attribute list for Point3D');
 
 foreach my $method (@Point3D_methods) {
