@@ -18,4 +18,7 @@ tests_recursive;
 
 makemaker_args(dist => { PREOP => 'pod2text lib/MooseX/Declare.pm > README' });
 
+repository('git://github.com/rafl/moosex-declare.git');
+bugtracker 'http://rt.cpan.org/Public/Dist/Display.html?Name=MooseX-Declare';
+
 WriteAll;
