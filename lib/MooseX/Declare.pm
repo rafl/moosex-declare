@@ -103,8 +103,9 @@ Sets a superclass for the class being declared.
 =item with
 
     class Foo with Role { ... }
+    class Foo with (Role1, Role2) { ... }
 
-Applies a role to the class being declared.
+Applies a role or roles to the class being declared.
 
 =item is mutable
 
