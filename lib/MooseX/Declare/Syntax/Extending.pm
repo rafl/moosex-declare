@@ -17,9 +17,9 @@ sub add_extends_option_customizations {
 
     # add code for extends keyword
     $ctx->add_scope_code_parts(
-        sprintf 'extends %s', 
-            join ', ', 
-            map  { "'$_'" } 
+        sprintf 'extends %s',
+            join ', ',
+            map  { "'$_'" }
             map  { $ctx->qualify_namespace($_) }
                 @{ $superclasses },
     );
