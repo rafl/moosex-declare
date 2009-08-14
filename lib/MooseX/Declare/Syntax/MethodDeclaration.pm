@@ -2,7 +2,7 @@ package MooseX::Declare::Syntax::MethodDeclaration;
 
 use Moose::Role;
 use MooseX::Method::Signatures::Meta::Method;
-use MooseX::Method::Signatures;
+use MooseX::Method::Signatures ();
 use MooseX::Method::Signatures::Types qw/PrototypeInjections/;
 
 use namespace::clean -except => 'meta';
