@@ -16,10 +16,11 @@ sub add_with_option_customizations {
     my ($self, $ctx, $package, $roles) = @_;
 
     # consume roles
-    $ctx->add_scope_code_parts(
-        sprintf 'with %s',
+    $ctx->add_early_cleanup_code_parts(
+        sprintf 'Moose::Util::apply_all_roles(%s->meta, %s)',
+            $package,
             join ', ',
-            map  { "'$_'" }
+            map  { "q[$_]" }
             map  { $ctx->qualify_namespace($_) }
                 @{ $roles },
     );
