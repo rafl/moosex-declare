@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 10;
+use Test::More;;
 use Test::Moose;
 
 use MooseX::Declare;
@@ -26,6 +26,7 @@ ok(!__PACKAGE__->can('augment'));
 my $meta_class_2 = class with Rollo;
 
 isa_ok($meta_class_2, 'Moose::Meta::Class');
+ok($meta_class_2->is_immutable);
 
 $class = $meta_class_2->name;
 meta_ok($class);
@@ -35,3 +36,5 @@ does_ok($class, 'Rollo');
 my $meta_class_3 = class();
 
 isa_ok($meta_class_3, 'Moose::Meta::Class', 'class() works');
+
+done_testing;
