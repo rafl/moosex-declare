@@ -28,7 +28,6 @@ role Role {
 
 class Moo::Kooh {
     extends 'Foo';
-    with 'Role';
 
     around foo ($x) { $x + 1 }
 
@@ -36,6 +35,8 @@ class Moo::Kooh {
 
     method kooh {}
     method required_thing {}
+
+    with 'Role';
 }
 
 class Corge extends Foo::Bar with Role {
