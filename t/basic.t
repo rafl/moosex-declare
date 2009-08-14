@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 24;
+use Test::More;
 use Test::Moose;
 use Test::Exception;
 
@@ -51,3 +51,11 @@ BEGIN { use_ok('Foo'); }
     is($o->foo(42), 43);
     is($o->bar(23), 'outer(23)-inner(23)');
 }
+
+{
+    my $quux = Quux->new;
+    lives_ok(sub { $quux->quux });
+    lives_ok(sub { $quux->quux(42) });
+}
+
+done_testing;
