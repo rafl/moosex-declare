@@ -1,13 +1,17 @@
 use strict;
 use warnings;
-use Test::More tests => 1;
+use Test::More;
 
 use MooseX::Declare;
 
-class BreakingClass {
-    method causes_bus_error {
-        delete my $foo;
-   }
-}
+eval q[
+    class BreakingClass {
+        method causes_bus_error {
+            delete my $foo;
+        }
+    }
+];
 
 pass('should not crash');
+
+done_testing;
