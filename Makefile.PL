@@ -6,7 +6,6 @@ name 'MooseX-Declare';
 all_from 'lib/MooseX/Declare.pm';
 
 requires 'Devel::Declare' => '0.005011';
-requires 'B::Hooks::EndOfScope';
 requires 'namespace::clean';
 requires 'namespace::autoclean' => '0.05';
 requires 'Moose' => '0.82';
