@@ -1,6 +1,12 @@
 use strict;
 use warnings;
-use Test::More tests => 1;
+use Test::More;
 
-is system($^X, '-Ilib', '-c', 't/lib/WithNewline.pm') >> 8, 0,
-    'should not throw an "expected option name" error';
+BEGIN {
+    eval 'use Test::Compile';
+    plan skip_all => 'Test::Compile required' if $@;
+}
+
+pm_file_ok('t/lib/WithNewline.pm', 'should not throw an "expected option name" error and segfault');
+
+done_testing;
