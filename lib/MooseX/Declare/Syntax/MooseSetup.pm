@@ -11,8 +11,6 @@ use aliased 'MooseX::Declare::Syntax::Keyword::Clean', 'CleanKeyword';
 
 use namespace::clean -except => 'meta';
 
-our @Roles;
-
 with qw(
     MooseX::Declare::Syntax::NamespaceHandling
     MooseX::Declare::Syntax::EmptyBlockIfMissing
@@ -20,7 +18,7 @@ with qw(
 
 sub auto_make_immutable { 0 }
 
-sub imported_moose_symbols { qw( confess blessed ) }
+sub imported_moose_symbols { qw( confess blessed with ) }
 
 sub import_symbols_from { 'Moose' }
 
@@ -65,27 +63,7 @@ after add_namespace_customizations => sub {
 
 after handle_post_parsing => sub {
     my ($self, $ctx, $package, $class) = @_;
-
-    # finish off by apply the roles
-    my $create_class = sub {
-        local @Roles = ();
-        shift->();
-        Moose::Util::apply_all_roles(find_meta($package), @Roles)
-            if @Roles;
-    };
-
-    $ctx->shadow(sub (&) { $create_class->(@_); return $class; });
-};
-
-after setup_inner_for => sub {
-    my ($self, $setup_class) = @_;
-
-    # install role collector
-    install_sub({
-        code    => sub { push @Roles, @_ },
-        into    => $setup_class,
-        as      => 'with',
-    });
+    $ctx->shadow(sub (&) { shift->(); return $class; });
 };
 
 1;
