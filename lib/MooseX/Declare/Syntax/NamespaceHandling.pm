@@ -135,8 +135,7 @@ sub parse {
 
     # actual code injection
     $ctx->inject_code_parts(
-        inject_cleanup_code_parts => defined($name),
-        missing_block_handler     => sub { $self->handle_missing_block(@_) },
+        missing_block_handler => sub { $self->handle_missing_block(@_) },
     );
 
     # a last chance to change things
