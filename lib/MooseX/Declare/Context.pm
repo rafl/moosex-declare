@@ -86,6 +86,11 @@ sub add_cleanup_code_parts {
     push @{ $self->cleanup_code_parts }, @parts;
 }
 
+sub add_early_cleanup_code_parts {
+    my ($self, @parts) = @_;
+    unshift @{ $self->cleanup_code_parts }, @parts;
+}
+
 sub inject_code_parts_here {
     my ($self, @parts) = @_;
 
