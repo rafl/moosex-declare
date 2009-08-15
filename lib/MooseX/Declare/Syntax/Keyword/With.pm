@@ -1,7 +1,8 @@
 package MooseX::Declare::Syntax::Keyword::With;
 
 use Moose;
-use MooseX::Declare::Util qw( outer_stack_push outer_stack_peek );
+use Moose::Util;
+use MooseX::Declare::Util qw( outer_stack_peek );
 use namespace::autoclean;
 
 with qw(
@@ -19,7 +20,7 @@ sub parse {
         confess "Declarative 'with' not implemented yet. Use the normal Moose 'with' syntax.";
     }
 
-    my $pkg = outer_stack_peek($ctx->caller_file);
+    my $pkg = outer_stack_peek $ctx->caller_file;
     $ctx->shadow(sub { Moose::Util::apply_all_roles($pkg, @_) });
 }
 
