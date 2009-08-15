@@ -1,27 +1,29 @@
 use MooseX::Declare;
 use Test::More('tests', 1);
 
-role Foo::Z {
+namespace Foo;
+
+role ::Z {
     method foo (Int $x) { $x }
 }
 
-role Foo::C {
-    with 'Foo::Z';
+role ::C {
+    with '::Z';
     around foo (Int $x) { $orig->($self, int($x / 3)) }
 }
 
-role Foo::B {
-    with 'Foo::C';
+role ::B {
+    with '::C';
     around foo (Int $x) { $orig->($self, $x + 2) }
 }
 
-role Foo::A {
-    with 'Foo::B';
+role ::A {
+    with '::B';
     around foo (Int $x) { $orig->($self, $x * 2) }
 }
 
 class TEST {
-    with 'Foo::A';
+    with '::A';
     around foo (Int $x) { $orig->($self, $x + 2) }
 }
 
