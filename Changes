@@ -1,3 +1,28 @@
+  * Add repository and bugtracker to Makefile.PL (Ash Berlin).
+  * Tests and doc fixes on applying multiple roles at once (Chas. J. Owens IV).
+  * Produce better diagnostic output on test failures (Dave Rolsky).
+  * Make MooseX::Method::Signatures handle the actual parsing for method-like
+    keywords (nperez).
+  * Clean now warns in autoclean namespaces (Robert 'phaylon' Sedlacek).
+  * 'method' keyword now only available by default in namespaces that consumed
+    MooseSetup (Robert 'phaylon' Sedlacek).
+  * Added 'namespace' keyword and allow namespaces, superclasses and roles to
+    be relative (Robert 'phaylon' Sedlacek).
+  * Stop depending on B::Hooks::EndOfScope. We don't use it direectly anymore.
+  * Add a real 'with' keyword.
+  * 'with' in a class- or role-body doesn't defer role application until the
+    end of the class- or role-definition anymore. The 'with'-option for the
+    class and role keywords still does.
+  * Add a tests for role application and method modifier ordering.
+  * Make anon classes immutabel as well (unless explicitly asked not to).
+  * Add a ctx method to add cleanup code that should be injected as early as
+    possible.
+  * Depend on recent versions of DD and MXMS to make keywords less reserved
+    (i.e. hash keys and barewords before fat commas).
+  * Make t/with_newlines.t less noisy.
+  * Add tests for methods with no signature not caring about their arguments,
+    other than $self.
+
 0.23  Thu, 25 Jun 2009 05:09:10 +0200
   * Add test to make sure methods returned from meta are
     MooseX::Method::Signatures::Meta::Method (nperez).
