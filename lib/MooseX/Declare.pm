@@ -258,6 +258,8 @@ With contributions from:
 
 =item Chas. J. Owens IV E<lt>chas.owens@gmail.comE<gt>
 
+=item Dave Rolsky E<lt>autarch@urth.orgE<gt>
+
 =item Hans Dieter Pearcey E<lt>hdp@cpan.orgE<gt>
 
 =item Matt Kraai E<lt>kraai@ftbfs.orgE<gt>
