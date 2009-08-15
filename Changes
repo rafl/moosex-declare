@@ -8,6 +8,7 @@
     MooseSetup (Robert 'phaylon' Sedlacek).
   * Added 'namespace' keyword and allow namespaces, superclasses and roles to
     be relative (Robert 'phaylon' Sedlacek).
+  * Add tests for using anonymous methods as attribute defaults (Devin Austin).
   * Stop depending on B::Hooks::EndOfScope. We don't use it direectly anymore.
   * Add a real 'with' keyword.
   * 'with' in a class- or role-body doesn't defer role application until the
