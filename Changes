@@ -1,3 +1,4 @@
+0.24  Sat, 15 Aug 2009 23:48:09 +0200
   * Add repository and bugtracker to Makefile.PL (Ash Berlin).
   * Tests and doc fixes on applying multiple roles at once (Chas. J. Owens IV).
   * Produce better diagnostic output on test failures (Dave Rolsky).
