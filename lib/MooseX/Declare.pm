@@ -260,6 +260,8 @@ With contributions from:
 
 =item Dave Rolsky E<lt>autarch@urth.orgE<gt>
 
+=item Devin Austin E<lt>dhoss@cpan.orgE<gt>
+
 =item Hans Dieter Pearcey E<lt>hdp@cpan.orgE<gt>
 
 =item Matt Kraai E<lt>kraai@ftbfs.orgE<gt>
