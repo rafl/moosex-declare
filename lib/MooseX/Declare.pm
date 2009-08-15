@@ -256,6 +256,8 @@ With contributions from:
 
 =item Ash Berlin E<lt>ash@cpan.orgE<gt>
 
+=item Chas. J. Owens IV E<lt>chas.owens@gmail.comE<gt>
+
 =item Hans Dieter Pearcey E<lt>hdp@cpan.orgE<gt>
 
 =item Matt Kraai E<lt>kraai@ftbfs.orgE<gt>
