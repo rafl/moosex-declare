@@ -1,3 +1,8 @@
+0.25  Sun, 16 Aug 2009 05:31:59 +0200
+  * Don't persist the inner keywords over more than one invocation of the declarator.
+  * Pass along the current context to import_symbols_from and imported_moose_symbols.
+  * Implement parameterizable roles.
+
 0.24  Sat, 15 Aug 2009 23:48:09 +0200
   * Add repository and bugtracker to Makefile.PL (Ash Berlin).
   * Tests and doc fixes on applying multiple roles at once (Chas. J. Owens IV).
