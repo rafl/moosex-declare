@@ -16,7 +16,7 @@
     end of the class- or role-definition anymore. The 'with'-option for the
     class and role keywords still does.
   * Add a tests for role application and method modifier ordering.
-  * Make anon classes immutabel as well (unless explicitly asked not to).
+  * Make anon classes immutable as well (unless explicitly asked not to).
   * Add a ctx method to add cleanup code that should be injected as early as
     possible.
   * Depend on recent versions of DD and MXMS to make keywords less reserved
