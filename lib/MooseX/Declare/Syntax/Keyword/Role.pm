@@ -31,7 +31,8 @@ around context_traits => sub { shift->(@_), ParameterizedCtx };
 around default_inner => sub {
     my ($next, $self, $stack) = @_;
     my $inner = $self->$next;
-    return $inner unless $stack->[-1]->is_parameterized;
+    return $inner
+        if !@{ $stack || [] } || !$stack->[-1]->is_parameterized;
 
     ParameterizedMethod->meta->apply($_)
         for grep { does_role($_, MethodDeclaration) } @{ $inner };
