@@ -10,6 +10,7 @@ requires 'namespace::clean';
 requires 'namespace::autoclean' => '0.05';
 requires 'Moose' => '0.82';
 requires 'MooseX::Method::Signatures' => '0.19';
+requires 'MooseX::Types::Moose';
 requires 'List::MoreUtils';
 
 test_requires 'Test::Exception';
