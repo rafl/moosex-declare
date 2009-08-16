@@ -51,7 +51,7 @@ after add_namespace_customizations => sub {
 
     # add Moose initializations to preamble
     $ctx->add_preamble_code_parts(
-        sprintf 'use %s qw( %s )', $self->import_symbols_from, join ' ', $self->imported_moose_symbols,
+        sprintf 'use %s qw( %s )', $self->import_symbols_from($ctx), join ' ', $self->imported_moose_symbols($ctx),
     );
 
     # make class immutable unless specified otherwise
