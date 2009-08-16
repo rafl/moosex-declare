@@ -10,14 +10,6 @@ requires qw(
     get_identifier
 );
 
-has inner => (
-    is          => 'rw',
-    isa         => 'ArrayRef',
-    required    => 1,
-    builder     => 'default_inner',
-    lazy        => 1,
-);
-
 sub default_inner { [] }
 
 after setup_for => sub {
@@ -28,7 +20,6 @@ after setup_for => sub {
 
     # setup inner keywords if we're inside ourself
     if (grep { $_ eq $self->get_identifier } @$stack) {
-
         $self->setup_inner_for($setup_class, %args);
     }
 };
@@ -37,7 +28,7 @@ sub setup_inner_for {
     my ($self, $setup_class, %args) = @_;
 
     # setup each keyword in target class
-    for my $inner (@{ $self->inner }) {
+    for my $inner (@{ $self->default_inner($args{stack}) }) {
         $inner->setup_for($setup_class, %args);
     }
 
