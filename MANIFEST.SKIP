@@ -6,4 +6,3 @@ blib\b
 ^Makefile.old$
 ^Debian
 ^MooseX-Declare-
-^(?:t/segfault_syntax_error\.t)$
