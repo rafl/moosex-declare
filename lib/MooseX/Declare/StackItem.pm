@@ -22,6 +22,11 @@ has is_dirty => (
     isa         => 'Bool',
 );
 
+has is_parameterized => (
+    is  => 'ro',
+    isa => 'Bool',
+);
+
 has namespace => (
     is          => 'ro',
     isa         => 'Str|Undef',
@@ -38,10 +43,11 @@ sub serialize {
     return sprintf '%s->new(%s)',
         ref($self),
         join ', ', map { defined($_) ? "q($_)" : 'undef' }
-        'identifier', $self->identifier,
-        'handler',    $self->handler,
-        'is_dirty',   ( $self->is_dirty ? 1 : 0 ),
-        'namespace',  $self->namespace,
+        'identifier',       $self->identifier,
+        'handler',          $self->handler,
+        'is_dirty',         ( $self->is_dirty         ? 1 : 0 ),
+        'is_parameterized', ( $self->is_parameterized ? 1 : 0 ),
+        'namespace',        $self->namespace,
         ;
 }
 
