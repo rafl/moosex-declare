@@ -1,6 +1,7 @@
 package MooseX::Declare::Context;
 
 use Moose;
+use MooseX::AttributeHelpers;
 use Moose::Util::TypeConstraints;
 use Carp qw/croak/;
 
@@ -44,24 +45,37 @@ has caller_file => (
 );
 
 has preamble_code_parts => (
-    is          => 'rw',
-    isa         => 'ArrayRef[MooseX::Declare::CodePart]',
-    required    => 1,
-    default     => sub { [] },
+    metaclass => 'Collection::Array',
+    is        => 'ro',
+    isa       => 'ArrayRef[MooseX::Declare::CodePart]',
+    required  => 1,
+    default   => sub { [] },
+    provides  => {
+        push => 'add_preamble_code_parts',
+    },
 );
 
 has scope_code_parts => (
-    is          => 'rw',
-    isa         => 'ArrayRef[MooseX::Declare::CodePart]',
-    required    => 1,
-    default     => sub { [] },
+    metaclass => 'Collection::Array',
+    is        => 'ro',
+    isa       => 'ArrayRef[MooseX::Declare::CodePart]',
+    required  => 1,
+    default   => sub { [] },
+    provides  => {
+        push => 'add_scope_code_parts',
+    },
 );
 
 has cleanup_code_parts => (
-    is          => 'rw',
-    isa         => 'ArrayRef[MooseX::Declare::CodePart]',
-    required    => 1,
-    default     => sub { [] },
+    metaclass => 'Collection::Array',
+    is        => 'ro',
+    isa       => 'ArrayRef[MooseX::Declare::CodePart]',
+    required  => 1,
+    default   => sub { [] },
+    provides  => {
+        push    => 'add_cleanup_code_parts',
+        unshift => 'add_early_cleanup_code_parts',
+    },
 );
 
 has stack => (
@@ -70,26 +84,6 @@ has stack => (
     default     => sub { [] },
     required    => 1,
 );
-
-sub add_preamble_code_parts {
-    my ($self, @parts) = @_;
-    push @{ $self->preamble_code_parts }, @parts;
-}
-
-sub add_scope_code_parts {
-    my ($self, @parts) = @_;
-    push @{ $self->scope_code_parts }, @parts;
-}
-
-sub add_cleanup_code_parts {
-    my ($self, @parts) = @_;
-    push @{ $self->cleanup_code_parts }, @parts;
-}
-
-sub add_early_cleanup_code_parts {
-    my ($self, @parts) = @_;
-    unshift @{ $self->cleanup_code_parts }, @parts;
-}
 
 sub inject_code_parts_here {
     my ($self, @parts) = @_;
