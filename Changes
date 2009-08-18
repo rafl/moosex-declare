@@ -1,3 +1,7 @@
+0.27  Tue, 18 Aug 2009 08:54:22 +0200
+  * Depend on MooseX::Method::Signatures 0.21 to make sure type aliasing works
+    and there are no warnings due to the recent MooseX::LazyRequire changes.
+
 0.26  Sun, 16 Aug 2009 14:48:12 +0200
   * Declare dependency on MooseX::AttributeHelpers.
 
