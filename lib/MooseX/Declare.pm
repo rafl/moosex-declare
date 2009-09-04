@@ -272,6 +272,10 @@ With contributions from:
 
 =item Piers Cawley E<lt>pdcawley@bofh.org.ukE<gt>
 
+=item Rafael Kitover E<lt>rkitover@io.comE<gt>
+
+=item Robert ’phaylon’ Sedlacek E<lt>rs@474.atE<gt>
+
 =item Stevan Little E<lt>stevan.little@iinteractive.comE<gt>
 
 =item Tomas Doran E<lt>bobtfish@bobtfish.netE<gt>
