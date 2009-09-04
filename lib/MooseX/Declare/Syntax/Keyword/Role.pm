@@ -66,16 +66,30 @@ sub add_parameterized_customizations {
     my @vars = map {
         does_role($_, Placeholder)
             ? ()
-            : [$_->variable_name, $_->label, $_->meta_type_constraint]
+            : {
+                var  => $_->variable_name,
+                name => $_->label,
+                tc   => $_->meta_type_constraint,
+                ($_->has_default_value
+                    ? (default => $_->default_value)
+                    : ()),
+            },
     } $sig->named_params;
 
     $ctx->add_preamble_code_parts(
         sprintf 'my (%s) = map { $_[0]->$_ } qw(%s);',
-            join(',', map { $_->[0] } @vars),
-            join(' ', map { $_->[1] } @vars),
+            join(',', map { $_->{var}  } @vars),
+            join(' ', map { $_->{name} } @vars),
     );
 
-    $ctx->add_parameter($_->[1] => { isa => $_->[2] }) for @vars;
+    for my $var (@vars) {
+        $ctx->add_parameter($var->{name} => {
+            isa => $var->{tc},
+            (exists $var->{default}
+                ? (default => sub { eval $var->{default} })
+                : ()),
+        });
+    }
 }
 
 after handle_post_parsing => sub {
