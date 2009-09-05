@@ -1,3 +1,8 @@
+0.30  Sat, 05 Sep 2009 02:48:05 +0200
+  * Make the attr inheriting TODO test work.
+  * Make default values for role parameters work (nperez).
+  * Add tests for the above (nperez).
+
 0.29  Mon, 31 Aug 2009 19:11:25 +0200
   * Add failing test for applying modifiers to a method directly composed from
     a role (nperez).
