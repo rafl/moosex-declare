@@ -1,7 +1,6 @@
 package MooseX::Declare::Context;
 
 use Moose;
-use MooseX::AttributeHelpers;
 use Moose::Util::TypeConstraints;
 use Carp qw/croak/;
 
@@ -45,36 +44,36 @@ has caller_file => (
 );
 
 has preamble_code_parts => (
-    metaclass => 'Collection::Array',
+    traits    => ['Array'],
     is        => 'ro',
     isa       => 'ArrayRef[MooseX::Declare::CodePart]',
     required  => 1,
     default   => sub { [] },
-    provides  => {
-        push => 'add_preamble_code_parts',
+    handles   => {
+        add_preamble_code_parts => 'push',
     },
 );
 
 has scope_code_parts => (
-    metaclass => 'Collection::Array',
+    traits    => ['Array'],
     is        => 'ro',
     isa       => 'ArrayRef[MooseX::Declare::CodePart]',
     required  => 1,
     default   => sub { [] },
-    provides  => {
-        push => 'add_scope_code_parts',
+    handles   => {
+        add_scope_code_parts => 'push',
     },
 );
 
 has cleanup_code_parts => (
-    metaclass => 'Collection::Array',
+    traits    => ['Array'],
     is        => 'ro',
     isa       => 'ArrayRef[MooseX::Declare::CodePart]',
     required  => 1,
     default   => sub { [] },
-    provides  => {
-        push    => 'add_cleanup_code_parts',
-        unshift => 'add_early_cleanup_code_parts',
+    handles   => {
+        add_cleanup_code_parts       => 'push',
+        add_early_cleanup_code_parts => 'unshift',
     },
 );
 

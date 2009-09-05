@@ -2,7 +2,6 @@ package MooseX::Declare::Context::Parameterized;
 
 use Moose::Role;
 use MooseX::Types::Moose qw/Str HashRef/;
-use MooseX::AttributeHelpers;
 
 use namespace::autoclean;
 
@@ -13,12 +12,12 @@ has parameter_signature => (
 );
 
 has parameters => (
-    metaclass => 'Collection::Hash',
+    traits    => ['Hash'],
     isa       => HashRef,
     default   => sub { {} },
-    provides  => {
-        set => 'add_parameter',
-        kv  => 'get_parameters',
+    handles   => {
+        add_parameter  => 'set',
+        get_parameters => 'kv',
     },
 );
 
