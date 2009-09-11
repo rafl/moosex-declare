@@ -39,7 +39,7 @@ class Moo::Kooh {
     with 'Role';
 }
 
-class Corge extends Foo::Bar with Role {
+class Corge extends Foo::Baz with Role {
     method corge {}
     method required_thing {}
 }
