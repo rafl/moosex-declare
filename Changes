@@ -1,3 +1,6 @@
+0.31  Thu, 17 Sep 2009 18:10:22 +0200
+  * Bump dependencies for no more warnings on new Moose versions.
+
 0.30  Sat, 05 Sep 2009 02:48:05 +0200
   * Make the attr inheriting TODO test work.
   * Make default values for role parameters work (nperez).
