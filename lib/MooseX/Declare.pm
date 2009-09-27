@@ -246,6 +246,8 @@ vim syntax: L<http://www.vim.org/scripts/script.php?script_id=2526>
 
 emacs syntax: L<http://github.com/jrockway/cperl-mode>
 
+Geany syntax + notes: L<http://www.cattlegrid.info/blog/2009/09/moosex-declare-geany-syntax.html>
+
 =head1 AUTHOR
 
 Florian Ragwitz E<lt>rafl@debian.orgE<gt>
@@ -265,6 +267,8 @@ With contributions from:
 =item Hans Dieter Pearcey E<lt>hdp@cpan.orgE<gt>
 
 =item Matt Kraai E<lt>kraai@ftbfs.orgE<gt>
+
+=item Michele Beltrame E<lt>arthas@cpan.orgE<gt>
 
 =item Nelo Onyiah E<lt>nelo.onyiah@gmail.comE<gt>
 
