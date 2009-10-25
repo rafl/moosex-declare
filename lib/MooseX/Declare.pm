@@ -266,6 +266,8 @@ With contributions from:
 
 =item Hans Dieter Pearcey E<lt>hdp@cpan.orgE<gt>
 
+=item Justin Hunter E<lt>justin.d.hunter@gmail.comE<gt>
+
 =item Matt Kraai E<lt>kraai@ftbfs.orgE<gt>
 
 =item Michele Beltrame E<lt>arthas@cpan.orgE<gt>
