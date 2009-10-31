@@ -11,7 +11,7 @@ requires 'namespace::autoclean' => '0.09';
 requires 'Moose' => '0.90';
 requires 'MooseX::Method::Signatures' => '0.24';
 requires 'MooseX::Role::Parameterized' => '0.12';
-requires 'MooseX::Types::Moose';
+requires 'MooseX::Types' => '0.20'; # need MooseX::Types::Moose
 requires 'List::MoreUtils';
 
 test_requires 'Test::Exception';

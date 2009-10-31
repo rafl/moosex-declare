@@ -260,6 +260,8 @@ With contributions from:
 
 =item Chas. J. Owens IV E<lt>chas.owens@gmail.comE<gt>
 
+=item Chris Prather E<lt>chris@prather.orgE<gt>
+
 =item Dave Rolsky E<lt>autarch@urth.orgE<gt>
 
 =item Devin Austin E<lt>dhoss@cpan.orgE<gt>
