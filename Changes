@@ -1,3 +1,8 @@
+0.32  Mon, 02 Nov 2009 03:00:42 +0100
+  * Add link to Geany syntax notes to documentation (Michele Beltrame).
+  * Convert from MooseX::MethodAttributes to Native::Trait (Justin Hunter).
+  * Update dependency on MooseX::Types (Chris Prather).
+
 0.31  Thu, 17 Sep 2009 18:10:22 +0200
   * Bump dependencies for no more warnings on new Moose versions.
 
