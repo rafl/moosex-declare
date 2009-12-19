@@ -7,6 +7,10 @@ role Counter (Str :$name, Int :$charges = 1) {
         $self->$name($self->$name + 1);
     }
 
+    method "decrement_${name}" {
+        $self->$name($self->$name - 1);
+    }
+
     method "reset_${name}" {
         $self->$name(0);
     }
