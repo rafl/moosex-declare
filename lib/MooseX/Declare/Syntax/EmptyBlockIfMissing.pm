@@ -17,7 +17,7 @@ __END__
 
 =head1 NAME
 
-MooseX::Declare::Syntax::EmptyBlockIfMissing
+MooseX::Declare::Syntax::EmptyBlockIfMissing - Handle missing blocks after keywords
 
 =head1 DESCRIPTION
 
