@@ -1,3 +1,6 @@
+0.33  Thu, 04 Feb 2010 02:50:14 +0100
+  * Depend on MooseX::Method::Signatures 0.30 to fix various incompatibilities.
+
 0.32  Mon, 02 Nov 2009 03:00:42 +0100
   * Add link to Geany syntax notes to documentation (Michele Beltrame).
   * Convert from MooseX::MethodAttributes to Native::Trait (Justin Hunter).
