@@ -37,4 +37,8 @@ my $meta_class_3 = class();
 
 isa_ok($meta_class_3, 'Moose::Meta::Class', 'class() works');
 
+my $meta_class_4 = (sub { shift })->( class{} );
+
+isa_ok($meta_class_4, 'Moose::Meta::Class', 'class works in a param list');
+
 done_testing;
