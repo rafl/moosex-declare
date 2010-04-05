@@ -282,7 +282,7 @@ With contributions from:
 
 =item Rafael Kitover E<lt>rkitover@io.comE<gt>
 
-=item Robert ’phaylon’ Sedlacek E<lt>rs@474.atE<gt>
+=item Robert 'phaylon' Sedlacek E<lt>rs@474.atE<gt>
 
 =item Stevan Little E<lt>stevan.little@iinteractive.comE<gt>
 
