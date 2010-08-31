@@ -3,7 +3,7 @@ package MooseX::Declare::Syntax::MethodDeclaration;
 
 use Moose::Role;
 use MooseX::Method::Signatures::Meta::Method;
-use MooseX::Method::Signatures 0.30 ();
+use MooseX::Method::Signatures 0.36 ();
 use MooseX::Method::Signatures::Types qw/PrototypeInjections/;
 
 use namespace::clean -except => 'meta';
