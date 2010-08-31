@@ -1,15 +1,43 @@
 package MooseX::Declare::Context::Parameterized;
+# ABSTRACT: context for parsing optionally parameterized statements
 
 use Moose::Role;
 use MooseX::Types::Moose qw/Str HashRef/;
 
 use namespace::autoclean;
 
+=head1 DESCRIPTION
+
+This context trait will add optional parameterization functionality to the
+context.
+
+=attr parameter_signature
+
+This will be set when the C<strip_parameter_signature> method is called and it
+was able to extract a list of parameterisations.
+
+=method has_parameter_signature
+
+Predicate method for the C<parameter_signature> attribute.
+
+=cut
+
 has parameter_signature => (
     is        => 'rw',
     isa       => Str,
     predicate => 'has_parameter_signature',
 );
+
+=method add_parameter
+
+Allows storing parameters extracted from C<parameter_signature> to be used
+later on.
+
+=method get_parameters
+
+Returns all previously added parameters.
+
+=cut
 
 has parameters => (
     traits    => ['Hash'],
@@ -20,6 +48,16 @@ has parameters => (
         get_parameters => 'kv',
     },
 );
+
+=method strip_parameter_signature
+
+  Maybe[Str] Object->strip_parameter_signature()
+
+This method is intended to parse the main namespace of a namespaced keyword.
+It will use L<Devel::Declare::Context::Simple>s C<strip_word> method and store
+the result in the L</namespace> attribute if true.
+
+=cut
 
 sub strip_parameter_signature {
     my ($self) = @_;
@@ -32,60 +70,12 @@ sub strip_parameter_signature {
     return $signature;
 }
 
-1;
-__END__
-
-=head1 NAME
-
-MooseX::Declare::Context::Parameterized - context for parsing optionally parameterized statements
-
-=head1 DESCRIPTION
-
-This context trait will add optional parameterization functionality to the
-context.
-
-=head1 ATTRIBUTES
-
-=head2 parameter_signature
-
-This will be set when the C<strip_parameter_signature> method is called and it
-was able to extract a list of parameterisations.
-
-=head1 METHODS
-
-=head2 has_parameter_signature
-
-Predicate method for the C<parameter_signature> attribute.
-
-=head2 strip_parameter_signature
-
-  Maybe[Str] Object->strip_parameter_signature()
-
-This method is intended to parse the main namespace of a namespaced keyword.
-It will use L<Devel::Declare::Context::Simple>s C<strip_word> method and store
-the result in the L</namespace> attribute if true.
-
-=head2 add_parameter
-
-Allows storing parameters extracted from C<parameter_signature> to be used
-later on.
-
-=head2 get_parameters
-
-Returns all previously added parameters.
-
 =head1 SEE ALSO
 
-=over
-
-=item * L<MooseX::Declare>
-
-=item * L<MooseX::Declare::Context>
-
-=back
-
-=head1 AUTHOR, COPYRIGHT & LICENSE
-
-See L<MooseX::Declare>
+=for :list
+* L<MooseX::Declare>
+* L<MooseX::Declare::Context>
 
 =cut
+
+1;

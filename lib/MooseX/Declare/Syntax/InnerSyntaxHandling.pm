@@ -1,4 +1,5 @@
 package MooseX::Declare::Syntax::InnerSyntaxHandling;
+# ABSTRACT: Keywords inside blocks
 
 use Moose::Role;
 
@@ -6,11 +7,45 @@ use MooseX::Declare::Util qw( outer_stack_push );
 
 use namespace::clean -except => 'meta';
 
+=head1 DESCRIPTION
+
+This role allows you to setup keyword handlers that are only available
+inside blocks or other scoping environments.
+
+=head1 REQUIRED METHODS
+
+=head2 get_identifier
+
+  Str get_identifier ()
+
+Required to return the name of the identifier of the current handler.
+
+=cut
+
 requires qw(
     get_identifier
 );
 
+=method default_inner
+
+  ArrayRef[Object] Object->default_inner ()
+
+Returns an empty C<ArrayRef> by default. If you want to setup additional
+keywords you will have to C<around> this method.
+
+=cut
+
 sub default_inner { [] }
+
+=head1 MODIFIED METHODS
+
+=head2 setup_for
+
+  Object->setup_for(ClassName $class, %args)
+
+After the keyword is setup inside itself, this will call L</setup_inner_for>.
+
+=cut
 
 after setup_for => sub {
     my ($self, $setup_class, %args) = @_;
@@ -23,6 +58,14 @@ after setup_for => sub {
         $self->setup_inner_for($setup_class, %args);
     }
 };
+
+=method setup_inner_for
+
+  Object->setup_inner_for(ClassName $class, %args)
+
+Sets up all handlers in the inner class.
+
+=cut
 
 sub setup_inner_for {
     my ($self, $setup_class, %args) = @_;
@@ -38,69 +81,13 @@ sub setup_inner_for {
     }
 }
 
-1;
-
-=head1 NAME
-
-MooseX::Declare::Syntax::InnerSyntaxHandling - Keywords inside blocks
-
-=head1 DESCRIPTION
-
-This role allows you to setup keyword handlers that are only available
-inside blocks or other scoping environments.
-
-=head1 ATTRIBUTES
-
-=head2 inner
-
-An C<ArrayRef> of keyword handlers that will be setup inside the built
-scope. It is initialized by the L</default_inner> method.
-
-=head1 REQUIRED METHODS
-
-=head2 get_identifier
-
-  Str get_identifier ()
-
-Required to return the name of the identifier of the current handler.
-
-=head1 METHODS
-
-=head2 default_inner
-
-  ArrayRef[Object] Object->default_inner ()
-
-Returns an empty C<ArrayRef> by default. If you want to setup additional
-keywords you will have to C<around> this method.
-
-=head2 setup_inner_for
-
-  Object->setup_inner_for(ClassName $class, %args)
-
-Sets up all handlers in the L</inner> attribute.
-
-=head1 MODIFIED METHODS
-
-=head2 setup_for
-
-  Object->setup_for(ClassName $class, %args)
-
-After the keyword is setup inside itself, this will call L</setup_inner_for>.
-
 =head1 SEE ALSO
 
-=over
-
-=item * L<MooseX::Declare>
-
-=item * L<MooseX::Declare::Syntax::NamespaceHandling>
-
-=item * L<MooseX::Declare::Syntax::MooseSetup>
-
-=back
-
-=head1 AUTHOR, COPYRIGHT & LICENSE
-
-See L<MooseX::Declare>
+=for :list
+* L<MooseX::Declare>
+* L<MooseX::Declare::Syntax::NamespaceHandling>
+* L<MooseX::Declare::Syntax::MooseSetup>
 
 =cut
+
+1;

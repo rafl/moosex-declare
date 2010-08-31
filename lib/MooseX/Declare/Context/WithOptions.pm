@@ -2,7 +2,7 @@ package MooseX::Declare::Context::WithOptions;
 
 use Moose::Role;
 use Carp qw/croak/;
-use MooseX::Types::Moose qw/HashRef/;
+use MooseX::Types::Moose 0.20 qw/HashRef/;
 
 use namespace::clean -except => 'meta';
 

@@ -1,7 +1,7 @@
 package MooseX::Declare::Syntax::MethodDeclaration::Parameterized;
 
 use Moose::Role;
-use MooseX::Role::Parameterized ();
+use MooseX::Role::Parameterized 0.12 ();
 use namespace::autoclean;
 
 around register_method_declaration => sub {

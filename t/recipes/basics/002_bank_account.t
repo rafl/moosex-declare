@@ -40,7 +40,7 @@ isa_ok($savings_account, 'BankAccount');
 
 is($savings_account->balance, 250, '... got the right savings balance');
 lives_ok {
-	$savings_account->withdraw(50);
+    $savings_account->withdraw(50);
 } '... withdrew from savings successfully';
 is($savings_account->balance, 200, '... got the right savings balance after withdrawl');
 
@@ -49,9 +49,9 @@ is($savings_account->balance, 350, '... got the right savings balance after depo
 
 {
     my $checking_account = CheckingAccount->new(
-    							balance => 100,
-    							overdraft_account => $savings_account
-    						);
+                                balance => 100,
+                                overdraft_account => $savings_account
+                            );
     isa_ok($checking_account, 'CheckingAccount');
     isa_ok($checking_account, 'BankAccount');
 
@@ -60,13 +60,13 @@ is($savings_account->balance, 350, '... got the right savings balance after depo
     is($checking_account->balance, 100, '... got the right checkings balance');
 
     lives_ok {
-    	$checking_account->withdraw(50);
+        $checking_account->withdraw(50);
     } '... withdrew from checking successfully';
     is($checking_account->balance, 50, '... got the right checkings balance after withdrawl');
     is($savings_account->balance, 350, '... got the right savings balance after checking withdrawl (no overdraft)');
 
     lives_ok {
-    	$checking_account->withdraw(200);
+        $checking_account->withdraw(200);
     } '... withdrew from checking successfully';
     is($checking_account->balance, 0, '... got the right checkings balance after withdrawl');
     is($savings_account->balance, 200, '... got the right savings balance after overdraft withdrawl');
@@ -74,9 +74,9 @@ is($savings_account->balance, 350, '... got the right savings balance after depo
 
 {
     my $checking_account = CheckingAccount->new(
-    							balance => 100
-    							# no overdraft account
-    						);
+                                balance => 100
+                                # no overdraft account
+                            );
     isa_ok($checking_account, 'CheckingAccount');
     isa_ok($checking_account, 'BankAccount');
 
@@ -85,12 +85,12 @@ is($savings_account->balance, 350, '... got the right savings balance after depo
     is($checking_account->balance, 100, '... got the right checkings balance');
 
     lives_ok {
-    	$checking_account->withdraw(50);
+        $checking_account->withdraw(50);
     } '... withdrew from checking successfully';
     is($checking_account->balance, 50, '... got the right checkings balance after withdrawl');
 
     dies_ok {
-    	$checking_account->withdraw(200);
+        $checking_account->withdraw(200);
     } '... withdrawl failed due to attempted overdraft';
     is($checking_account->balance, 50, '... got the right checkings balance after withdrawl failure');
 }

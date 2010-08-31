@@ -1,23 +1,9 @@
 package MooseX::Declare::Syntax::Keyword::Method;
+# ABSTRACT: Handle method declarations
 
 use Moose;
 
 use namespace::clean -except => 'meta';
-
-with 'MooseX::Declare::Syntax::MethodDeclaration';
-
-sub register_method_declaration {
-    my ($self, $meta, $name, $method) = @_;
-    return $meta->add_method($name, $method);
-}
-
-1;
-
-__END__
-
-=head1 NAME
-
-MooseX::Declare::Syntax::Keyword::Method - Handle method declarations
 
 =head1 DESCRIPTION
 
@@ -26,15 +12,14 @@ that allows you to install keywords that declare methods.
 
 =head1 CONSUMES
 
-=over
+=for :list
+* L<MooseX::Declare::Syntax::MethodDeclaration>
 
-=item * L<MooseX::Declare::Syntax::MethodDeclaration>
+=cut
 
-=back
+with 'MooseX::Declare::Syntax::MethodDeclaration';
 
-=head1 METHODS
-
-=head2 register_method_declaration
+=method register_method_declaration
 
   Object->register_method_declaration (Object $metaclass, Str $name, Object $method)
 
@@ -54,22 +39,21 @@ This will mean that the signature C<(Str $foo)> will become
 C<CodeRef $orig: Object $self, Str $foo> and and C<()> will become
 C<CodeRef $orig: Object $self>.
 
+=cut
+
+sub register_method_declaration {
+    my ($self, $meta, $name, $method) = @_;
+    return $meta->add_method($name, $method);
+}
+
 =head1 SEE ALSO
 
-=over
-
-=item * L<MooseX::Declare>
-
-=item * L<MooseX::Declare::Syntax::MooseSetup>
-
-=item * L<MooseX::Declare::Syntax::MethodDeclaration>
-
-=item * L<MooseX::Method::Signatures>
-
-=back
-
-=head1 AUTHOR, COPYRIGHT & LICENSE
-
-See L<MooseX::Declare>
+=for :list
+* L<MooseX::Declare>
+* L<MooseX::Declare::Syntax::MooseSetup>
+* L<MooseX::Declare::Syntax::MethodDeclaration>
+* L<MooseX::Method::Signatures>
 
 =cut
+
+1;

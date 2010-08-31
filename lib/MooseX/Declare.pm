@@ -2,14 +2,13 @@ use strict;
 use warnings;
 
 package MooseX::Declare;
+# ABSTRACT: Declarative syntax for Moose
 
 use aliased 'MooseX::Declare::Syntax::Keyword::Class',      'ClassKeyword';
 use aliased 'MooseX::Declare::Syntax::Keyword::Role',       'RoleKeyword';
 use aliased 'MooseX::Declare::Syntax::Keyword::Namespace',  'NamespaceKeyword';
 
-use namespace::clean;
-
-our $VERSION = '0.33';
+use namespace::clean 0.11;
 
 sub import {
     my ($class, %args) = @_;
@@ -29,14 +28,6 @@ sub keywords {
     RoleKeyword->new(identifier => 'role'),
     NamespaceKeyword->new(identifier => 'namespace'),
 }
-
-1;
-
-__END__
-
-=head1 NAME
-
-MooseX::Declare - Declarative syntax for Moose
 
 =head1 SYNOPSIS
 
@@ -234,68 +225,16 @@ imports, have a look at the C<clean> keyword and the C<dirty> trait.
 
 =head1 SEE ALSO
 
-L<Moose>
-
-L<Moose::Role>
-
-L<MooseX::Method::Signatures>
-
-L<namespace::autoclean>
-
-vim syntax: L<http://www.vim.org/scripts/script.php?script_id=2526>
-
-emacs syntax: L<http://github.com/jrockway/cperl-mode>
-
-Geany syntax + notes: L<http://www.cattlegrid.info/blog/2009/09/moosex-declare-geany-syntax.html>
-
-=head1 AUTHOR
-
-Florian Ragwitz E<lt>rafl@debian.orgE<gt>
-
-With contributions from:
-
-=over 4
-
-=item Ash Berlin E<lt>ash@cpan.orgE<gt>
-
-=item Chas. J. Owens IV E<lt>chas.owens@gmail.comE<gt>
-
-=item Chris Prather E<lt>chris@prather.orgE<gt>
-
-=item Dave Rolsky E<lt>autarch@urth.orgE<gt>
-
-=item Devin Austin E<lt>dhoss@cpan.orgE<gt>
-
-=item Hans Dieter Pearcey E<lt>hdp@cpan.orgE<gt>
-
-=item Justin Hunter E<lt>justin.d.hunter@gmail.comE<gt>
-
-=item Matt Kraai E<lt>kraai@ftbfs.orgE<gt>
-
-=item Michele Beltrame E<lt>arthas@cpan.orgE<gt>
-
-=item Nelo Onyiah E<lt>nelo.onyiah@gmail.comE<gt>
-
-=item nperez E<lt>nperez@cpan.orgE<gt>
-
-=item Piers Cawley E<lt>pdcawley@bofh.org.ukE<gt>
-
-=item Rafael Kitover E<lt>rkitover@io.comE<gt>
-
-=item Robert 'phaylon' Sedlacek E<lt>rs@474.atE<gt>
-
-=item Stevan Little E<lt>stevan.little@iinteractive.comE<gt>
-
-=item Tomas Doran E<lt>bobtfish@bobtfish.netE<gt>
-
-=item Yanick Champoux E<lt>yanick@babyl.dyndns.orgE<gt>
-
-=back
-
-=head1 COPYRIGHT AND LICENSE
-
-Copyright (c) 2008, 2009  Florian Ragwitz
-
-Licensed under the same terms as perl itself.
+=for :list
+* L<Moose>
+* L<Moose::Role>
+* L<MooseX::Method::Signatures>
+* L<namespace::autoclean>
+* vim syntax: L<http://www.vim.org/scripts/script.php?script_id=2526>
+* emacs syntax: L<http://github.com/jrockway/cperl-mode>
+* Geany syntax + notes: L<http://www.cattlegrid.info/blog/2009/09/moosex-declare-geany-syntax.html>
 
 =cut
+
+
+1;
