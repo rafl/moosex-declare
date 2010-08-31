@@ -1,3 +1,7 @@
+0.34  Wed, 01 Sep 2010 01:10:28 +0200
+  * Depend on MooseX::MooseX::Signatures 0.36 to avoid deprecation warnings on
+    new versions of Moose (Jeremy Carman).
+
 0.33  Thu, 04 Feb 2010 02:50:14 +0100
   * Depend on MooseX::Method::Signatures 0.30 to fix various incompatibilities.
 
