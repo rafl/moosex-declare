@@ -1,3 +1,6 @@
+0.35  Tue, 23 Aug 2011 13:13:10 +0200
+  * Adapt to changes in MooseX::Role::Parameterized 0.27.
+
 0.34  Wed, 01 Sep 2010 01:10:28 +0200
   * Depend on MooseX::MooseX::Signatures 0.36 to avoid deprecation warnings on
     new versions of Moose (Jeremy Carman).
