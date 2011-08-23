@@ -128,6 +128,7 @@ sub add_parameterized_customizations {
 
     for my $var (@vars) {
         $ctx->add_parameter($var->{name} => {
+            is  => 'ro',
             isa => $var->{tc},
             (exists $var->{default}
                 ? (default => sub { eval $var->{default} })
